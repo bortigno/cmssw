@@ -140,8 +140,9 @@ EMTFUnpacker::produce(edm::Event& e, const edm::EventSetup& c)
         const FEDRawData& fedData = rawdata->FEDData(fedid);
         if( fedData.size()==0 ) continue;
         std::cout << "fed id = " << fedid << std::endl;
-        std::cout << "fedData size = " << fedData.size() << std::endl;
-        //LogDebug("CSCTFUnpacker|produce");
+	std::cout << "fedData size = " << fedData.size() << std::endl;
+	std::cout << "fedData.data(): " << fedData.data() << std::endl;
+	//LogDebug("CSCTFUnpacker|produce");
         //if( monitor ) monitor->process((unsigned short*)fedData.data());
         //unsigned int unpacking_status = tfEvent.unpack((unsigned short*)fedData.data(),fedData.size()/2);
 	}
