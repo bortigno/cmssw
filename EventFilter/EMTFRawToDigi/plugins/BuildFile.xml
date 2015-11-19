@@ -1,5 +1,0 @@
-<use   name="EventFilter/EMTFRawToDigi"/>
-<use   name="FWCore/Utilities"/>
-<library   file="*.cc" name="EventFilterEMTFRawToDigiPlugins">
-  <flags   EDM_PLUGIN="1"/>
-</library>
