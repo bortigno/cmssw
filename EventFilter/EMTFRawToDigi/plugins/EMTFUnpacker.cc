@@ -52,6 +52,17 @@
 #include "EventFilter/EMTFRawToDigi/interface/EMTFUnpacker.h"
 
 
+//MTF7 
+#include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_header_block_operator.h"
+#include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_event_generator.h"
+#include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_data_operator.h"
+#include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_operator_builder.h"
+#include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_debug.h"
+#include "EventFilter/EMTFRawToDigi/include/mtf7/unity_test.h"
+#include "EventFilter/EMTFRawToDigi/include/mtf7/block_operator.h"
+#include <string>
+#include <fstream>
+
 //
 // constants, enums and typedefs
 //
@@ -145,6 +156,28 @@ EMTFUnpacker::produce(edm::Event& e, const edm::EventSetup& c)
 	//LogDebug("CSCTFUnpacker|produce");
         //if( monitor ) monitor->process((unsigned short*)fedData.data());
         //unsigned int unpacking_status = tfEvent.unpack((unsigned short*)fedData.data(),fedData.size()/2);
+	
+	const char* data_release = "test";	
+	mtf7::emutf_operator_builder * my_operator = new mtf7::emutf_operator_builder();
+	mtf7::emutf_data_operator * my_data_operator = my_operator -> get_data_operator(data_release);
+	mtf7::emutf_event * _unpacked_event = new mtf7::emutf_event();
+	// setting the event where the unpacked information will be stored
+	my_data_operator -> set_unpacked_event_info_ptr(_unpacked_event);
+	// // and now unpacking
+	const mtf7::word_64bit * buffer_pointer = (const long unsigned int*)fedData.data();
+	my_data_operator->unpack(buffer_pointer);
+	std::cout << "unpacked event AMC13 Header evt_ty    : " << _unpacked_event -> _amc13_header_evt_ty << std::endl;
+	std::cout << "unpacked event AMC13 Header lv1_id    : " << _unpacked_event -> _amc13_header_lv1_id << std::endl;
+	std::cout << "unpacked event AMC13 Header bx_id     : " << _unpacked_event -> _amc13_header_bx_id << std::endl;
+	std::cout << "unpacked event AMC13 Header source_id : " << _unpacked_event -> _amc13_header_source_id << std::endl;
+	std::cout << "unpacked event AMC13 Header header_x  : " << _unpacked_event -> _amc13_header_x << std::endl;
+	std::cout << "unpacked event AMC13 Header header_h  : " << _unpacked_event -> _amc13_header_h << std::endl;
+	std::cout << "unpacked event AMC13 Header header_fov: " << _unpacked_event -> _amc13_header_fov << std::endl;
+
+	//----This works!  The AMC13 (and CDF) header is successfully unpacked!
+	// This then tries to unpack the header block operator, but breaks because there is no header block operator present.
+	//It would be nice if the unpacker jumped to the next section if formatting characters were not found, rather than break out of the event.
+
 	}
 
 }

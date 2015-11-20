@@ -6,21 +6,36 @@
 //----------------------------------------------------------------------
 const mtf7::word_64bit *mtf7::emutf_amc13_header_block_operator::unpack( const word_64bit *at_ptr ){
 ////std::cout << "Unpacking emutf_amc13_header_block_operator" << std::endl;
-
+std::cout << "Begin unpacking AMC13 Header" << std::endl;
    if (*_error_status != mtf7::NO_ERROR) return 0;
-
+std::cout << "Checkpoint 1" << std::endl;
    _buffer_start_ptr = at_ptr;
 
-  if (at_ptr== 0){ *_error_status = mtf7::NULL_BUFFER_PTR; return 0; }
+   if (at_ptr== 0){
+	   std::cout << "Checkpoint 1.1" << std::endl;
+	   *_error_status = mtf7::NULL_BUFFER_PTR; return 0;
+   }
+   std::cout << "Checkpoint 2" << std::endl;
 
-  // - - - - - - - - - - - - - - - - - - - - - 
-  // process 1st 64-bit word ...
-  // CDF header
-  break_into_abcd_words( *at_ptr); at_ptr++;
+   // - - - - - - - - - - - - - - - - - - - - - 
+   // process 1st 64-bit word ...
+   // CDF header
+   break_into_abcd_words( *at_ptr); at_ptr++;
+   std::cout << "Checkpoint 3" << std::endl;
 
-  // check format identifiers
-  if ( (_16bit_word_a & 0xf000) != 0x5000 ) *_error_status = mtf7::EVENT_RECORD_FORMAT;
-  if (*_error_status != mtf7::NO_ERROR) return 0;
+   // check format identifiers
+   if ( (_16bit_word_a & 0xf000) != 0x5000 ){
+std::cout << "16bit word a: " << _16bit_word_a << std::endl;	
+std::cout << "16bit word b: " << _16bit_word_b << std::endl;	
+std::cout << "16bit word c: " << _16bit_word_c << std::endl;	
+std::cout << "16bit word d: " << _16bit_word_d << std::endl;	
+
+   std::cout << "Checkpoint 3.1" << std::endl; 
+	   *_error_status = mtf7::EVENT_RECORD_FORMAT;
+   }
+   std::cout << "Checkpoint 4" << std::endl;
+   if (*_error_status != mtf7::NO_ERROR) return 0;
+   std::cout << "Checkpoint 5" << std::endl;
 
   _unpacked_event_info -> _amc13_header_evt_ty = (_16bit_word_a >> 8) & 0xf;
   _unpacked_event_info -> _amc13_header_lv1_id = _16bit_word_b & 0xffff;
@@ -34,7 +49,9 @@ const mtf7::word_64bit *mtf7::emutf_amc13_header_block_operator::unpack( const w
 
   // - - - - - - - - - - - - - - - - - - - - - 
   // 2nd 64-bit word ...
+   std::cout << "Checkpoint 6" << std::endl;
   break_into_abcd_words( *at_ptr); at_ptr++;
+   std::cout << "Checkpoint 7" << std::endl;
 
   // set values derived from 1st word
 _unpacked_event_info -> _amc13_header_namc  =  _16bit_word_a & 0xf; _16bit_word_a <<= 4;
@@ -48,6 +65,7 @@ _unpacked_event_info -> _amc13_header_ufov  =  _16bit_word_a & 0xf;
   //_unpacked_event_info -> _amc13_header_orn |= (_16bit_word_a & 0xf) << 28;
   _unpacked_event_info -> _amc13_header_orn |= (_16bit_word_d & 0xf) << 28;
 
+   std::cout << "Checkpoint 8" << std::endl;
   return at_ptr;
 
 }

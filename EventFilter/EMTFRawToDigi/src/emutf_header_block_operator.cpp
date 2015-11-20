@@ -2,31 +2,65 @@
 
 //----------------------------------------------------------------------
 const mtf7::word_64bit *mtf7::emutf_header_block_operator::unpack( const word_64bit *at_ptr ){
+std::cout << "Begin unpacking EMUTF header block operator" << std::endl;
+std::cout << "Checkpoint 1" << std::endl;
    if (*_error_status != mtf7::NO_ERROR) return 0;
+std::cout << "Checkpoint 2" << std::endl;
 
    _buffer_start_ptr = at_ptr;
 
   if (at_ptr== 0){ *_error_status = mtf7::NULL_BUFFER_PTR; return 0; }
+std::cout << "Checkpoint 3" << std::endl;
 
   // - - - - - - - - - - - - - - - - - - - - - 
   // process 1st 64-bit word ...
   break_into_abcd_words( *at_ptr); at_ptr++;
-
+std::cout << "Checkpoint 4" << std::endl;
+std::cout << "Print abcd words for first 64 bit word" << std::endl;
+std::cout << "Word a: " << _16bit_word_a << std::endl;
+std::cout << "Word b: " << _16bit_word_b << std::endl;
+std::cout << "Word c: " << _16bit_word_c << std::endl;
+std::cout << "Word d: " << _16bit_word_d << std::endl;
   // check format identifiers
-  if ( (_16bit_word_a & 0xf000) != 0x9000 ) *_error_status = mtf7::EVENT_RECORD_FORMAT;
-  if ( (_16bit_word_b & 0xf000) != 0x9000 ) *_error_status = mtf7::EVENT_RECORD_FORMAT;
-  if (  _16bit_word_c           != 0x9000 ) *_error_status = mtf7::EVENT_RECORD_FORMAT;
-  if ( _16bit_word_c & 0xfff != 0x000 ) *_error_status = mtf7::EVENT_RECORD_FORMAT; //BAM
-  if ( (_16bit_word_d & 0xf000) != 0x9000 ) *_error_status = mtf7::EVENT_RECORD_FORMAT;
-  if (*_error_status != mtf7::NO_ERROR) return 0;
+if ( (_16bit_word_a & 0xf000) != 0x9000 ){ 
+	*_error_status = mtf7::EVENT_RECORD_FORMAT;
+	std::cout << "Checkpoint 4.0.1" << std::endl;
+}
+std::cout << "Checkpoint 4.1" << std::endl;
+if ( (_16bit_word_b & 0xf000) != 0x9000 ) {
+*_error_status = mtf7::EVENT_RECORD_FORMAT;
+std::cout << "Checkpoint 4.1.1" << std::endl;
+}
+std::cout << "Checkpoint 4.2" << std::endl;
+if (  _16bit_word_c           != 0x9000 ){
+ *_error_status = mtf7::EVENT_RECORD_FORMAT;
+std::cout << "Checkpoint 4.2.1" << std::endl;
+}
+std::cout << "Checkpoint 4.3" << std::endl;
+if ( _16bit_word_c & 0xfff != 0x000 ){
+ *_error_status = mtf7::EVENT_RECORD_FORMAT; //BAM
+std::cout << "Checkpoint 4.3.1" << std::endl;
+}
+std::cout << "Checkpoint 4.4" << std::endl;
+if ( (_16bit_word_d & 0xf000) != 0x9000 ){
+ *_error_status = mtf7::EVENT_RECORD_FORMAT;
+std::cout << "Checkpoint 4.4.1" << std::endl;
+}
+std::cout << "Checkpoint 4.5" << std::endl;
+if (*_error_status != mtf7::NO_ERROR) return 0;
+std::cout << "Checkpoint 4.6" << std::endl;
 
   // set values derived from 1st word
   _unpacked_event_info -> _l1a  =  _16bit_word_a & 0xfff;
+std::cout << "Checkpoint 4.7" << std::endl;
   _unpacked_event_info -> _l1a |= (_16bit_word_b & 0xfff) << 12;
+std::cout << "Checkpoint 4.8" << std::endl;
   _unpacked_event_info -> _bxn  =  _16bit_word_d & 0xfff;
+std::cout << "Checkpoint 4.9" << std::endl;
 
   // - - - - - - - - - - - - - - - - - - - - - 
   // 2nd 64-bit word ...
+std::cout << "Checkpoint 5" << std::endl;
   break_into_abcd_words( *at_ptr); at_ptr++;
 
     // check format identifiers
@@ -38,6 +72,7 @@ const mtf7::word_64bit *mtf7::emutf_header_block_operator::unpack( const word_64
   if ( (_16bit_word_d & 0xf000) != 0xa000 ) *_error_status = mtf7::EVENT_RECORD_FORMAT;
 
   if (*_error_status != mtf7::NO_ERROR) return 0;
+std::cout << "Checkpoint 6" << std::endl;
 
   _unpacked_event_info -> _sp_addr =  _16bit_word_b & 0x1f;
   _unpacked_event_info -> _sp_ersv = (_16bit_word_b >> 5) & 0x7;
@@ -60,13 +95,19 @@ const mtf7::word_64bit *mtf7::emutf_header_block_operator::unpack( const word_64
   // third 64-bit word ...
   break_into_abcd_words( *at_ptr); at_ptr++;
 
+std::cout << "Checkpoint 7" << std::endl;
   // check format identifiers
   if ( (_16bit_word_a & 0x8000) != 0x8000)            *_error_status = mtf7::EVENT_RECORD_FORMAT;
+std::cout << "Checkpoint 8" << std::endl;
   if ( (_16bit_word_b & 0x8000) != 0x0000)             *_error_status = mtf7::EVENT_RECORD_FORMAT;
+std::cout << "Checkpoint 9" << std::endl;
   if ( (_16bit_word_c & 0x8000) != 0x0000)             *_error_status = mtf7::EVENT_RECORD_FORMAT;
+std::cout << "Checkpoint 10" << std::endl;
   if ( (_16bit_word_d & 0x8000) != 0x0000)             *_error_status = mtf7::EVENT_RECORD_FORMAT;
+std::cout << "Checkpoint 11" << std::endl;
 
   if (*_error_status != mtf7::NO_ERROR) return 0;
+std::cout << "Checkpoint 12" << std::endl;
 
   _unpacked_event_info -> _ME1b =  _16bit_word_a & 0x1ff; _16bit_word_a >>= 9;
   _unpacked_event_info -> _RPC  =  _16bit_word_a & 0x3f;
@@ -80,6 +121,7 @@ const mtf7::word_64bit *mtf7::emutf_header_block_operator::unpack( const word_64
   _unpacked_event_info -> _ME4  =  _16bit_word_d & 0x1ff; _16bit_word_d >>= 9;
   _unpacked_event_info -> _RPC |= (_16bit_word_d & 0x3f) << 18;
 
+std::cout << "Checkpoint 13" << std::endl;
   return at_ptr;
 
 }

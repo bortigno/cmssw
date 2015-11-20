@@ -5,6 +5,7 @@
 
 //----------------------------------------------------------------------
 const mtf7::word_64bit *mtf7::emutf_amc13_trailer_block_operator::unpack( const word_64bit *at_ptr ){
+
    if (*_error_status != mtf7::NO_ERROR) return 0;
 
    _buffer_start_ptr = at_ptr;

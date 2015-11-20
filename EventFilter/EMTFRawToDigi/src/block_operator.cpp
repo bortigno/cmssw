@@ -34,12 +34,17 @@ mtf7::error_value mtf7::block_operator::get_error_status()
 void mtf7::block_operator::break_into_abcd_words( word_64bit input_value ){
 
   MTF7_DEBUG( std::cout, input_value);
-
+/*
   _16bit_word_a = input_value & 0xffff; input_value >>= 16;
   _16bit_word_b = input_value & 0xffff; input_value >>= 16;
   _16bit_word_c = input_value & 0xffff; input_value >>= 16;
   _16bit_word_d = input_value & 0xffff; 
+*/
 
+  _16bit_word_d = input_value & 0xffff; input_value >>= 16;
+  _16bit_word_c = input_value & 0xffff; input_value >>= 16;
+  _16bit_word_b = input_value & 0xffff; input_value >>= 16;
+  _16bit_word_a = input_value & 0xffff; 
 }
 
 //----------------------------------------------------------------------
