@@ -32,8 +32,9 @@ mtf7::error_value mtf7::emutf_data_operator::unpack( const word_64bit *buffer ){
     }
     MTF7_DEBUG_MSG(std::cout, "Unpacked. "); MTF7_DEBUG(std::cout, tmp_ptr);
 
-    MTF7_DEBUG_MSG(std::cout, "Number of AMC sending data to the AMC13 : "); MTF7_DEBUG(std::cout, _unpacked_event_info -> emutf_amc13_header_block -> _amc13_header_namc);
+    MTF7_DEBUG_MSG(std::cout, "Number of AMC sending data to the AMC13 : "); MTF7_DEBUG(std::cout, _unpacked_event_info -> _emutf_amc13_header_block -> _amc13_header_namc);
 
+    // number of MTF7 boards sending data to the AMC13.
     unsigned int nAMC = _unpacked_event_info -> _emutf_amc13_header_block -> _amc13_header_namc;
 
     // loop over all AMC13 payloads present in the event
@@ -43,11 +44,11 @@ mtf7::error_value mtf7::emutf_data_operator::unpack( const word_64bit *buffer ){
 				iter != _workers->end()-1 ; iter++){ // the amc13 trailer will be unpacked at the very end
 			if (_error_status != NO_ERROR) return _error_status;
 
-		    emutf_block_operator * _tmp_block_operator = dynamic_cast<emutf_block_operator *> (_workers->at(*iter));
+		    _tmp_block_operator = dynamic_cast<emutf_block_operator *> (*iter);
 		    MTF7_DEBUG_MSG( std::cout, "Setting _unpacked_event_info");
 		    _tmp_block_operator -> set_unpacked_event_info_ptr( _unpacked_event_info );
 		    MTF7_DEBUG( std::cout, tmp_ptr ); MTF7_DEBUG( std::cout, *tmp_ptr );
-		    MTF7_DEBUG_MSG( std::cout, "Unpacking block number :"); MTF7_DEBUG(std::cout, std::distance(_workers->begin(),_workers->at(*iter)));
+		    MTF7_DEBUG_MSG( std::cout, "Unpacking block number :"); MTF7_DEBUG(std::cout, std::distance(_workers->begin(),iter));
 		    tmp_ptr = _tmp_block_operator -> unpack (tmp_ptr);
 
 		    // check if pointer is not null, otherwise print the error and the block number
@@ -57,10 +58,12 @@ mtf7::error_value mtf7::emutf_data_operator::unpack( const word_64bit *buffer ){
 		            return _error_status;
 		    }
 		    MTF7_DEBUG_MSG(std::cout, "Unpacked. "); MTF7_DEBUG(std::cout, tmp_ptr);
-    }
+    	}
+
+    }	
 
     // AMC13/CDF trailer
-    emutf_block_operator * _tmp_block_operator = dynamic_cast<emutf_block_operator *> (_workers->back());
+    _tmp_block_operator = dynamic_cast<emutf_block_operator *> (_workers->back());
     MTF7_DEBUG_MSG( std::cout, "Setting _unpacked_event_info");
     _tmp_block_operator -> set_unpacked_event_info_ptr( _unpacked_event_info );
     MTF7_DEBUG( std::cout, tmp_ptr ); MTF7_DEBUG( std::cout, *tmp_ptr );
@@ -100,7 +103,7 @@ mtf7::error_value mtf7::emutf_data_operator::unpack( const word_64bit *buffer ){
 	// }
 
 	MTF7_DEBUG_MSG( std::cout, "All blocks unpacked: testing values and _error_status:");
-	MTF7_DEBUG( std::cout, _unpacked_event_info -> emutf_amc13_header_block -> _l1a );  
+	MTF7_DEBUG( std::cout, _unpacked_event_info -> _emutf_amc13_header_block -> _amc13_header_lv1_id );  
 	MTF7_DEBUG( std::cout, _error_status);
 
 	return _error_status;
@@ -109,7 +112,7 @@ mtf7::error_value mtf7::emutf_data_operator::unpack( const word_64bit *buffer ){
 
 
 //----------------------------------------------------------------------
-const mtf7::word_64bit *mtf7::emutf_data_operator::pack( ){
+const mtf7::word_64bit *mtf7::emutf_data_operator::pack(){
 	MTF7_DEBUG_MSG(std::cout, "######### Packing ######### "); 
 
 	unsigned long total_buffer_size = 0;

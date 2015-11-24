@@ -1,3 +1,4 @@
+#define DEBUG_BUILD 1
 #ifdef DEBUG_BUILD
 	#define MTF7_DEBUG( os, var ) \
   		(os) << "DBG: " << __FILE__ << "(" << __LINE__ << ") "\

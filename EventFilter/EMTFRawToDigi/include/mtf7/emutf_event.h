@@ -33,7 +33,7 @@ namespace mtf7{
   // Event Record Header
   struct emutf_header_block {
 
-    word_32bit _l1a;    
+    word_32bit _l1a, _RPC;    
     word_16bit _bxn, _ME1a, _ME1b, _ME2, _ME3, _ME4;
     word_8bit  _sp_ts, _sp_ersv, _sp_addr, _tbin;   
     word_1bit  _ddm, _spa, _rpca, _skip, _rdy, _bsy, _osy, _wof;    
@@ -61,16 +61,18 @@ namespace mtf7{
     _ME2  = 0; 
     _ME3  = 0; 
     _ME4  = 0;
+
+    _RPC = 0;
+
     }
   };
 
   // Block of Counters
   struct emutf_counter_block{
  
-    word_32bit _RPC, _TC, _OC;
+    word_32bit _TC, _OC;
 
     void clear_block(){
-    _RPC = 0; 
     _TC  = 0;
     _OC  = 0;
     }
@@ -215,7 +217,7 @@ namespace mtf7{
     // In each event there are one AMC13 header and trailer and nAMC data blocks. nAMC is a value written in the AMC13 header
 
     // AMC13 event header
-    emutf_amc13_header_block *_emutf_amc13_header_block;
+    emutf_amc13_header_block *_emutf_amc13_header_block = new emutf_amc13_header_block();
     // Vector of event record header
     std::vector<emutf_header_block *> _emutf_header_block_vector;
     // Vector of block of counters
@@ -229,7 +231,7 @@ namespace mtf7{
     // Vector of event record trailer
     std::vector<emutf_trailer_block *> _emutf_trailer_block_vector;
     // AMC13 event trailer 
-    emutf_amc13_trailer_block *_emutf_amc13_trailer_block;
+    emutf_amc13_trailer_block *_emutf_amc13_trailer_block = new emutf_amc13_trailer_block();
 
   };
 
