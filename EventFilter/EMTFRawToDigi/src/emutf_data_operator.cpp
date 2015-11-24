@@ -16,31 +16,89 @@ mtf7::error_value mtf7::emutf_data_operator::unpack( const word_64bit *buffer ){
 	MTF7_DEBUG_MSG(std::cout, "######### Unpacking ######### "); 
 	const word_64bit *tmp_ptr = buffer;
 
-	for (block_operator_iterator iter = _workers -> begin(); 
-			iter != _workers -> end(); iter++){
-		if (_error_status != NO_ERROR) return _error_status;
+    // AMC13/CDF header
+    emutf_block_operator * _tmp_block_operator = dynamic_cast<emutf_block_operator *> (_workers->begin();
+    MTF7_DEBUG_MSG( std::cout, "Setting _unpacked_event_info");
+    _tmp_block_operator -> set_unpacked_event_info_ptr( _unpacked_event_info );
+    MTF7_DEBUG( std::cout, tmp_ptr ); MTF7_DEBUG( std::cout, *tmp_ptr );
+    // MTF7_DEBUG_MSG( std::cout, "Unpacking block number :"); MTF7_DEBUG(std::cout, std::distance(_workers->begin(),_workers->at(0)));
+    tmp_ptr = _tmp_block_operator -> unpack (tmp_ptr);
 
-		emutf_block_operator * _tmp_block_operator = dynamic_cast<emutf_block_operator *> (*iter);
+    // check if pointer is not null, otherwise print the error and the block number
+    if(tmp_ptr == 0 ){
+            // std::cout << "ERR: Error unpacking block number " << std::distance(_workers->begin(),_workerd->at(0)) << std::endl;
+            std::cout << "ERR: Error value :" << _error_status << std::endl;
+            return _error_status;
+    }
+    MTF7_DEBUG_MSG(std::cout, "Unpacked. "); MTF7_DEBUG(std::cout, tmp_ptr);
 
-		MTF7_DEBUG_MSG( std::cout, "Setting _unpacked_event_info");
-		_tmp_block_operator -> set_unpacked_event_info_ptr( _unpacked_event_info );
+    MTF7_DEBUG_MSG(std::cout, "Number of AMC sending data to the AMC13 : "); MTF7_DEBUG(std::cout, _unpacked_event_info -> emutf_amc13_header_block -> nAMC);
 
-		MTF7_DEBUG( std::cout, tmp_ptr ); MTF7_DEBUG( std::cout, *tmp_ptr );
-		MTF7_DEBUG_MSG( std::cout, "Unpacking block number :"); MTF7_DEBUG(std::cout, std::distance(_workers->begin(),iter));
-		tmp_ptr = _tmp_block_operator -> unpack (tmp_ptr);
+    // loop over all AMC13 payloads present in the event
+    for ( unsigned int _sp = 0; _sp <= nAMC +1 ; _sp++ ){
 
-		// check if pointer is not null, otherwise print the error and the block number
-		if(tmp_ptr == 0 ){
-			std::cout << "ERR: Error unpacking block number " << std::distance(_workers->begin(),iter) << std::endl;
-			std::cout << "ERR: Error value :" << _error_status << std::endl;
-			return _error_status;
-		}
-		MTF7_DEBUG_MSG(std::cout, "Unpacked. "); MTF7_DEBUG(std::cout, tmp_ptr);
+		for (block_operator_iterator iter = _workers -> at(1); // the amc13 header has been already unpacked 
+				iter != _workers -> at(_workers->size()-1) ; iter++){ // the amc13 trailer will be unpacked at the very end
+			if (_error_status != NO_ERROR) return _error_status;
 
-	}
+		    emutf_block_operator * _tmp_block_operator = dynamic_cast<emutf_block_operator *> (_workers->at(*iter));
+		    MTF7_DEBUG_MSG( std::cout, "Setting _unpacked_event_info");
+		    _tmp_block_operator -> set_unpacked_event_info_ptr( _unpacked_event_info );
+		    MTF7_DEBUG( std::cout, tmp_ptr ); MTF7_DEBUG( std::cout, *tmp_ptr );
+		    MTF7_DEBUG_MSG( std::cout, "Unpacking block number :"); MTF7_DEBUG(std::cout, std::distance(_workers->begin(),_workers->at(*iter)));
+		    tmp_ptr = _tmp_block_operator -> unpack (tmp_ptr);
+
+		    // check if pointer is not null, otherwise print the error and the block number
+		    if(tmp_ptr == 0 ){
+		            // std::cout << "ERR: Error unpacking block number " << std::distance(_workers->begin(),_workerd->at(0)) << std::endl;
+		            std::cout << "ERR: Error value :" << _error_status << std::endl;
+		            return _error_status;
+		    }
+		    MTF7_DEBUG_MSG(std::cout, "Unpacked. "); MTF7_DEBUG(std::cout, tmp_ptr);
+    }
+
+    // AMC13/CDF trailer
+    emutf_block_operator * _tmp_block_operator = dynamic_cast<emutf_block_operator *> (_workers->back());
+    MTF7_DEBUG_MSG( std::cout, "Setting _unpacked_event_info");
+    _tmp_block_operator -> set_unpacked_event_info_ptr( _unpacked_event_info );
+    MTF7_DEBUG( std::cout, tmp_ptr ); MTF7_DEBUG( std::cout, *tmp_ptr );
+    MTF7_DEBUG_MSG( std::cout, "Unpacking AMC13 triler");
+    tmp_ptr = _tmp_block_operator -> unpack (tmp_ptr);
+
+    // check if pointer is not null, otherwise print the error and the block number
+    if(tmp_ptr == 0 ){
+            // std::cout << "ERR: Error unpacking block number " << std::distance(_workers->begin(),_workerd->at(0)) << std::endl;
+            std::cout << "ERR: Error value :" << _error_status << std::endl;
+            return _error_status;
+    }
+    MTF7_DEBUG_MSG(std::cout, "Unpacked. "); MTF7_DEBUG(std::cout, tmp_ptr);
+
+
+	// for (block_operator_iterator iter = _workers -> begin(); 
+	// 		iter != _workers -> end(); iter++){
+	// 	if (_error_status != NO_ERROR) return _error_status;
+
+	// 	emutf_block_operator * _tmp_block_operator = dynamic_cast<emutf_block_operator *> (*iter);
+
+	// 	MTF7_DEBUG_MSG( std::cout, "Setting _unpacked_event_info");
+	// 	_tmp_block_operator -> set_unpacked_event_info_ptr( _unpacked_event_info );
+
+	// 	MTF7_DEBUG( std::cout, tmp_ptr ); MTF7_DEBUG( std::cout, *tmp_ptr );
+	// 	MTF7_DEBUG_MSG( std::cout, "Unpacking block number :"); MTF7_DEBUG(std::cout, std::distance(_workers->begin(),iter));
+	// 	tmp_ptr = _tmp_block_operator -> unpack (tmp_ptr);
+
+	// 	// check if pointer is not null, otherwise print the error and the block number
+	// 	if(tmp_ptr == 0 ){
+	// 		std::cout << "ERR: Error unpacking block number " << std::distance(_workers->begin(),iter) << std::endl;
+	// 		std::cout << "ERR: Error value :" << _error_status << std::endl;
+	// 		return _error_status;
+	// 	}
+	// 	MTF7_DEBUG_MSG(std::cout, "Unpacked. "); MTF7_DEBUG(std::cout, tmp_ptr);
+
+	// }
 
 	MTF7_DEBUG_MSG( std::cout, "All blocks unpacked: testing values and _error_status:");
-	MTF7_DEBUG( std::cout, _unpacked_event_info -> _l1a );  MTF7_DEBUG( std::cout, _unpacked_event_info -> _csc_me_bxn );
+	MTF7_DEBUG( std::cout, _unpacked_event_info -> emutf_amc13_header_block -> _l1a );  
 	MTF7_DEBUG( std::cout, _error_status);
 
 	return _error_status;
@@ -68,9 +126,9 @@ const mtf7::word_64bit *mtf7::emutf_data_operator::pack( ){
 		emutf_block_operator *tmp_ptr = dynamic_cast<emutf_block_operator*>(*iter);
 
 		MTF7_DEBUG_MSG(std::cout, "Set event info to pack");
-		MTF7_DEBUG( std::cout, _event_info -> _l1a);
-		MTF7_DEBUG( std::cout, _event_info -> _csc_me_bxn);
-		MTF7_DEBUG( std::cout, _event_info -> _amc13_header_lv1_id);
+		// MTF7_DEBUG( std::cout, _event_info -> _l1a);
+		// MTF7_DEBUG( std::cout, _event_info -> _csc_me_bxn);
+		// MTF7_DEBUG( std::cout, _event_info -> _amc13_header_lv1_id);
 		MTF7_DEBUG( std::cout, typeid(_event_info).name());
 		tmp_ptr -> set_event_info_to_pack ( _event_info ); // this is calling the emutf_block_operator
 
