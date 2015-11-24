@@ -17,7 +17,7 @@ mtf7::error_value mtf7::emutf_data_operator::unpack( const word_64bit *buffer ){
 	const word_64bit *tmp_ptr = buffer;
 
     // AMC13/CDF header
-    emutf_block_operator * _tmp_block_operator = dynamic_cast<emutf_block_operator *> (_workers->begin();
+    emutf_block_operator * _tmp_block_operator = dynamic_cast<emutf_block_operator *> (_workers->front());
     MTF7_DEBUG_MSG( std::cout, "Setting _unpacked_event_info");
     _tmp_block_operator -> set_unpacked_event_info_ptr( _unpacked_event_info );
     MTF7_DEBUG( std::cout, tmp_ptr ); MTF7_DEBUG( std::cout, *tmp_ptr );
@@ -32,13 +32,15 @@ mtf7::error_value mtf7::emutf_data_operator::unpack( const word_64bit *buffer ){
     }
     MTF7_DEBUG_MSG(std::cout, "Unpacked. "); MTF7_DEBUG(std::cout, tmp_ptr);
 
-    MTF7_DEBUG_MSG(std::cout, "Number of AMC sending data to the AMC13 : "); MTF7_DEBUG(std::cout, _unpacked_event_info -> emutf_amc13_header_block -> nAMC);
+    MTF7_DEBUG_MSG(std::cout, "Number of AMC sending data to the AMC13 : "); MTF7_DEBUG(std::cout, _unpacked_event_info -> emutf_amc13_header_block -> _amc13_header_namc);
+
+    unsigned int nAMC = _unpacked_event_info -> _emutf_amc13_header_block -> _amc13_header_namc;
 
     // loop over all AMC13 payloads present in the event
     for ( unsigned int _sp = 0; _sp <= nAMC +1 ; _sp++ ){
 
-		for (block_operator_iterator iter = _workers -> at(1); // the amc13 header has been already unpacked 
-				iter != _workers -> at(_workers->size()-1) ; iter++){ // the amc13 trailer will be unpacked at the very end
+		for (block_operator_iterator iter = _workers -> begin()+1; // the amc13 header has been already unpacked 
+				iter != _workers->end()-1 ; iter++){ // the amc13 trailer will be unpacked at the very end
 			if (_error_status != NO_ERROR) return _error_status;
 
 		    emutf_block_operator * _tmp_block_operator = dynamic_cast<emutf_block_operator *> (_workers->at(*iter));

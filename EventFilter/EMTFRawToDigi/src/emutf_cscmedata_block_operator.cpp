@@ -3,7 +3,7 @@
 const mtf7::word_64bit *mtf7::emutf_cscmedata_block_operator::unpack ( const mtf7::word_64bit *at_ptr ){
 
   // pick the csc me data block
-  emutf_cscmedata_block * _unpacked_block_event_info; 
+  emutf_cscmedata_block * _unpacked_block_event_info = new emutf_cscmedata_block(); 
   _unpacked_block_event_info -> clear_block();
 
 //std::cout << "Unpacking emutf_cscmedata_block_operator" << std::endl;
@@ -59,7 +59,7 @@ unsigned long mtf7::emutf_cscmedata_block_operator::pack(){
   mtf7::word_64bit *ptr = buffer;
 
   // pick the block event info
-  emutf_cscmedata_block * _block_event_info_to_pack = _event_info_to_pack -> _emutf_cscmedata_block->begin();
+  emutf_cscmedata_block * _block_event_info_to_pack = _event_info_to_pack -> _emutf_cscmedata_block_vector.front();
   
   _16bit_word_a = _block_event_info_to_pack -> _csc_key_wire_group & 0x7f; _16bit_word_a <<= 4;
   _16bit_word_a |= _block_event_info_to_pack -> _csc_quality & 0xf; _16bit_word_a <<= 4;

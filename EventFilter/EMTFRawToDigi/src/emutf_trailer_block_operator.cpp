@@ -7,7 +7,7 @@
 const mtf7::word_64bit *mtf7::emutf_trailer_block_operator::unpack( const word_64bit *at_ptr ){
 
   // pick the spoutput data block
-  emutf_trailer_block * _unpacked_block_event_info; 
+  emutf_trailer_block * _unpacked_block_event_info = new emutf_trailer_block(); 
   _unpacked_block_event_info -> clear_block();
 
   if (*_error_status != mtf7::NO_ERROR) return 0;
@@ -77,7 +77,7 @@ unsigned long mtf7::emutf_trailer_block_operator::pack(){
   mtf7::word_64bit *ptr = buffer;
 
   // pick the block event info
-  emutf_trailer_block * _block_event_info_to_pack = _event_info_to_pack -> _emutf_trailer_block->begin();
+  emutf_trailer_block * _block_event_info_to_pack = _event_info_to_pack -> _emutf_trailer_block_vector.front();
 
   // pack 1st 64bit word --------------------
 

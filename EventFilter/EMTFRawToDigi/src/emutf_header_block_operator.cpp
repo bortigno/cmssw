@@ -4,7 +4,7 @@
 const mtf7::word_64bit *mtf7::emutf_header_block_operator::unpack( const word_64bit *at_ptr ){
 
 // pick the header block
-emutf_header_block * _unpacked_block_event_info; 
+emutf_header_block * _unpacked_block_event_info = new emutf_header_block(); 
 _unpacked_block_event_info -> clear_block();
 
 std::cout << "Begin unpacking EMUTF header block operator" << std::endl;
@@ -142,7 +142,7 @@ unsigned long mtf7::emutf_header_block_operator::pack(){
   mtf7::word_64bit *ptr = buffer;
 
   // pick the block event info
-  emutf_header_block * _block_event_info_to_pack = _event_info_to_pack -> _emutf_header_block->begin();
+  emutf_header_block * _block_event_info_to_pack = _event_info_to_pack -> _emutf_header_block_vector.front();
 
   // pack 1st 64bit word --------------------
 

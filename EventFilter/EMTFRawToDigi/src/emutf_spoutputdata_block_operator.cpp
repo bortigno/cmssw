@@ -8,7 +8,7 @@ bool mtf7::emutf_spoutputdata_block_operator::isd15true ( mtf7::word_16bit word 
 const mtf7::word_64bit *mtf7::emutf_spoutputdata_block_operator::unpack ( const mtf7::word_64bit *at_ptr ){
 
 	// pick the spoutput data block
-	emutf_spoutputdata_block * _unpacked_block_event_info; 
+	emutf_spoutputdata_block * _unpacked_block_event_info = new emutf_spoutputdata_block(); 
 	_unpacked_block_event_info -> clear_block();
 
 	if (*_error_status != mtf7::NO_ERROR) return 0;
@@ -80,7 +80,7 @@ unsigned long mtf7::emutf_spoutputdata_block_operator::pack(){
 	mtf7::word_64bit *ptr = buffer;
 
 	// pick the block event info
-	emutf_spoutputdata_block * _block_event_info_to_pack = _event_info_to_pack -> _emutf_spoutputdata_block->begin();
+	emutf_spoutputdata_block * _block_event_info_to_pack = _event_info_to_pack -> _emutf_spoutputdata_block_vector.front();
 
 	// pack 1st 64 bit word
 

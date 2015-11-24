@@ -4,7 +4,7 @@ const mtf7::word_64bit *mtf7::emutf_counter_block_operator::unpack ( const mtf7:
 
 
   // pick the counter block
-  emutf_counter_block * _unpacked_block_event_info; 
+  emutf_counter_block * _unpacked_block_event_info = new emutf_counter_block(); 
   _unpacked_block_event_info -> clear_block();
 
   //std::cout << "Unpacking emutf_counter_block_operator" << std::endl;
@@ -41,7 +41,7 @@ unsigned long mtf7::emutf_counter_block_operator::pack(){
   mtf7::word_64bit *ptr = buffer;
 
   // pick the block event info
-  emutf_counter_block * _block_event_info_to_pack = _event_info_to_pack -> _emutf_counter_block->begin();
+  emutf_counter_block * _block_event_info_to_pack = _event_info_to_pack -> _emutf_counter_block_vector.front();
   
   mtf7::word_32bit tmp_32bit_word = _block_event_info_to_pack -> _TC;
 

@@ -2,6 +2,7 @@
 #define __MTF7_EMU_EVENT__ 
 
 #include "EventFilter/EMTFRawToDigi/include/mtf7/types.h"
+#include <vector>
 
 namespace mtf7{
 
@@ -216,17 +217,17 @@ namespace mtf7{
     // AMC13 event header
     emutf_amc13_header_block *_emutf_amc13_header_block;
     // Vector of event record header
-    std::vector<emutf_header_block> _emutf_header_block_vector;
+    std::vector<emutf_header_block *> _emutf_header_block_vector;
     // Vector of block of counters
-    std::vector<emutf_counter_block> _emutf_counter_block_vector;
+    std::vector<emutf_counter_block *> _emutf_counter_block_vector;
     // Vector of CSC ME data record
-    std::vector<emutf_cscmedata_block> _emutf_cscmedata_block_vector;
+    std::vector<emutf_cscmedata_block *> _emutf_cscmedata_block_vector;
     // Vector of RPC data record
-    std::vector<emutf_rpcdata_block> _emutf_rpcdata_block_vector;
+    std::vector<emutf_rpcdata_block *> _emutf_rpcdata_block_vector;
     // Vector of SP output data record
-    std::vector<emutf_spoutputdata_block> _emutf_spoutputdata_block_vector;
+    std::vector<emutf_spoutputdata_block *> _emutf_spoutputdata_block_vector;
     // Vector of event record trailer
-    std::vector<emutf_trailer_block> _emutf_trailer_block_vector;
+    std::vector<emutf_trailer_block *> _emutf_trailer_block_vector;
     // AMC13 event trailer 
     emutf_amc13_trailer_block *_emutf_amc13_trailer_block;
 
@@ -237,12 +238,18 @@ namespace mtf7{
   static void clear_emutf_event( emutf_event *event_info ){
 
     event_info -> _emutf_amc13_header_block -> clear_block();
-    event_info -> _emutf_header_block_vector -> clear_block();
-    event_info -> _emutf_counter_block_vector -> clear_block();
-    event_info -> _emutf_cscmedata_block_vector -> clear_block();
-    event_info -> _emutf_rpcdata_block_vector -> clear_block();
-    event_info -> _emutf_spoutputdata_block_vector -> clear_block();
-    event_info -> _emutf_trailer_block_vector -> clear_block();
+    for (unsigned int i=0; i<= event_info -> _emutf_header_block_vector.size(); i++)
+        event_info -> _emutf_header_block_vector.at(i) -> clear_block();
+    for (unsigned int i=0; i<= event_info -> _emutf_counter_block_vector.size(); i++)
+        event_info -> _emutf_counter_block_vector.at(i) -> clear_block();
+    for (unsigned int i=0; i<= event_info -> _emutf_cscmedata_block_vector.size(); i++)
+        event_info -> _emutf_cscmedata_block_vector.at(i) -> clear_block();
+    for (unsigned int i=0; i<= event_info -> _emutf_rpcdata_block_vector.size(); i++)
+        event_info -> _emutf_rpcdata_block_vector.at(i) -> clear_block();
+    for (unsigned int i=0; i<= event_info -> _emutf_spoutputdata_block_vector.size(); i++)
+        event_info -> _emutf_spoutputdata_block_vector.at(i) -> clear_block();
+    for (unsigned int i=0; i<= event_info -> _emutf_trailer_block_vector.size(); i++)
+        event_info -> _emutf_trailer_block_vector.at(i) -> clear_block();
     event_info -> _emutf_amc13_trailer_block -> clear_block();
 
   }

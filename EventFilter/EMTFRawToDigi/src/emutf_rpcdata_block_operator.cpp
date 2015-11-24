@@ -3,7 +3,7 @@
 const mtf7::word_64bit *mtf7::emutf_rpcdata_block_operator::unpack ( const mtf7::word_64bit *at_ptr ){
 
   // pick the rpc me data block
-  emutf_rpcdata_block * _unpacked_block_event_info; 
+  emutf_rpcdata_block * _unpacked_block_event_info = new emutf_rpcdata_block(); 
   _unpacked_block_event_info -> clear_block();
 
 //std::cout << "Unpacking emutf_rpcdata_block_operator" << std::endl;
@@ -51,7 +51,7 @@ unsigned long mtf7::emutf_rpcdata_block_operator::pack(){
   mtf7::word_64bit *ptr = buffer;
 
   // pick the block event info
-  emutf_rpcdata_block * _block_event_info_to_pack = _event_info_to_pack -> _emutf_rpcdata_block->begin();
+  emutf_rpcdata_block * _block_event_info_to_pack = _event_info_to_pack -> _emutf_rpcdata_block_vector.front();
   
   _16bit_word_a = _block_event_info_to_pack -> _rpc_prt_delay & 0x7; _16bit_word_a <<= 4;
   _16bit_word_a |= _block_event_info_to_pack -> _rpc_partition_num & 0xf; _16bit_word_a <<= 8;
