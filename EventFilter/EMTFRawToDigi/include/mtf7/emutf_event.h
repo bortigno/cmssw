@@ -2,6 +2,7 @@
 #define __MTF7_EMU_EVENT__ 
 
 #include "EventFilter/EMTFRawToDigi/include/mtf7/types.h"
+#include <iostream>
 #include <vector>
 
 namespace mtf7{
@@ -13,6 +14,8 @@ namespace mtf7{
     word_16bit _amc13_header_bx_id, _amc13_header_source_id;
     word_8bit _amc13_header_evt_ty, _amc13_header_fov, _amc13_header_ufov, _amc13_header_res, _amc13_header_namc;
     word_1bit _amc13_header_h, _amc13_header_x;
+
+    emutf_amc13_header_block(){ std::cout << "@HEAR ME: Constructing header" << std::endl; clear_block(); }
 
     void clear_block(){
         _amc13_header_orn = 0;
@@ -211,6 +214,9 @@ namespace mtf7{
     }
   };
 
+
+
+
   // EMUTF Full Event
   struct emutf_event {
 
@@ -256,6 +262,7 @@ namespace mtf7{
 
   }
 
-}
 
+
+}
 #endif

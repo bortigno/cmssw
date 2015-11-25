@@ -40,7 +40,12 @@ std::cout << "16bit word d: " << _16bit_word_d << std::endl;
   // pick the amc13 block
   emutf_amc13_header_block * _unpacked_block_event_info = _unpacked_event_info -> _emutf_amc13_header_block;
 
+  std::cout << "Checkpoint 5.1" << std::endl;
+
   _unpacked_block_event_info -> _amc13_header_evt_ty = (_16bit_word_a >> 8) & 0xf;
+  std::cout << "Checkpoint 5.2" << std::endl;
+  std::cout << "Checkpoint 5.3" << std::endl;
+
   _unpacked_block_event_info -> _amc13_header_lv1_id = _16bit_word_b & 0xffff;
   _unpacked_block_event_info -> _amc13_header_lv1_id |= (_16bit_word_a & 0xff) << 16;
   _unpacked_block_event_info -> _amc13_header_bx_id = (_16bit_word_c >> 4) & 0xfff;

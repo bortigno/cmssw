@@ -166,13 +166,13 @@ EMTFUnpacker::produce(edm::Event& e, const edm::EventSetup& c)
 	// // and now unpacking
 	const mtf7::word_64bit * buffer_pointer = (const long unsigned int*)fedData.data();
 	my_data_operator->unpack(buffer_pointer);
-	std::cout << "unpacked event AMC13 Header evt_ty    : " << _unpacked_event -> _amc13_header_evt_ty << std::endl;
-	std::cout << "unpacked event AMC13 Header lv1_id    : " << _unpacked_event -> _amc13_header_lv1_id << std::endl;
-	std::cout << "unpacked event AMC13 Header bx_id     : " << _unpacked_event -> _amc13_header_bx_id << std::endl;
-	std::cout << "unpacked event AMC13 Header source_id : " << _unpacked_event -> _amc13_header_source_id << std::endl;
-	std::cout << "unpacked event AMC13 Header header_x  : " << _unpacked_event -> _amc13_header_x << std::endl;
-	std::cout << "unpacked event AMC13 Header header_h  : " << _unpacked_event -> _amc13_header_h << std::endl;
-	std::cout << "unpacked event AMC13 Header header_fov: " << _unpacked_event -> _amc13_header_fov << std::endl;
+	// std::cout << "unpacked event AMC13 Header evt_ty    : " << _unpacked_event -> _amc13_header_evt_ty << std::endl;
+	// std::cout << "unpacked event AMC13 Header lv1_id    : " << _unpacked_event -> _amc13_header_lv1_id << std::endl;
+	// std::cout << "unpacked event AMC13 Header bx_id     : " << _unpacked_event -> _amc13_header_bx_id << std::endl;
+	// std::cout << "unpacked event AMC13 Header source_id : " << _unpacked_event -> _amc13_header_source_id << std::endl;
+	// std::cout << "unpacked event AMC13 Header header_x  : " << _unpacked_event -> _amc13_header_x << std::endl;
+	// std::cout << "unpacked event AMC13 Header header_h  : " << _unpacked_event -> _amc13_header_h << std::endl;
+	// std::cout << "unpacked event AMC13 Header header_fov: " << _unpacked_event -> _amc13_header_fov << std::endl;
 
 	//----This works!  The AMC13 (and CDF) header is successfully unpacked!
 	// This then tries to unpack the header block operator, but breaks because there is no header block operator present.
