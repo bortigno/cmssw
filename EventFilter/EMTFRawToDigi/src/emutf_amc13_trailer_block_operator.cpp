@@ -35,6 +35,8 @@ const mtf7::word_64bit *mtf7::emutf_amc13_trailer_block_operator::unpack( const 
   _unpacked_block_event_info -> _amc13_trailer_f = _16bit_word_d & 0x1; _16bit_word_d >>= 1;
   _unpacked_block_event_info -> _amc13_trailer_c = _16bit_word_d & 0x1;
 
+  std::cout << "Event lenght : " << _unpacked_block_event_info -> _amc13_trailer_evt_lgth << std::endl;
+
   return at_ptr;
 
 }

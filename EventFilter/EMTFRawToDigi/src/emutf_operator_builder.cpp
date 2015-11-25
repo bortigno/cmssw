@@ -1,11 +1,13 @@
 #include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_operator_builder.h"
 #include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_data_operator.h"
 #include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_amc13_header_block_operator.h"
+#include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_prepayload_header_block_operator.h"
 #include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_header_block_operator.h"
 #include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_counter_block_operator.h"
 #include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_cscmedata_block_operator.h"
 #include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_rpcdata_block_operator.h"
 #include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_spoutputdata_block_operator.h"
+#include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_postpayload_trailer_block_operator.h"
 #include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_trailer_block_operator.h"
 #include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_amc13_trailer_block_operator.h"
 #include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_debug.h"
@@ -41,6 +43,10 @@ mtf7::block_operator_vector *mtf7::emutf_operator_builder::assemble_block_vector
 		mtf7::emutf_amc13_header_block_operator * amc13_header = new mtf7::emutf_amc13_header_block_operator( error_ptr );
 		_operator_vector->push_back( amc13_header );
 
+		MTF7_DEBUG_MSG( std::cout, " --- PrePayload header");
+		mtf7::emutf_prepayload_header_block_operator * prepayload_header = new mtf7::emutf_prepayload_header_block_operator( error_ptr );
+		_operator_vector->push_back( prepayload_header );
+
 		// header
 		MTF7_DEBUG_MSG( std::cout, " --- header" );
 		mtf7::emutf_header_block_operator * header = new mtf7::emutf_header_block_operator( error_ptr );
@@ -70,6 +76,11 @@ mtf7::block_operator_vector *mtf7::emutf_operator_builder::assemble_block_vector
 		MTF7_DEBUG_MSG( std::cout,  " --- event trailer block" );
 		mtf7::emutf_trailer_block_operator * trailer = new mtf7::emutf_trailer_block_operator( error_ptr );
 		_operator_vector->push_back( trailer );
+
+		// postpayload trailer
+		MTF7_DEBUG_MSG( std::cout,  " --- event postpayload trailer block" );
+		mtf7::emutf_postpayload_trailer_block_operator * postpayload_trailer = new mtf7::emutf_postpayload_trailer_block_operator( error_ptr );
+		_operator_vector->push_back( postpayload_trailer );
 
 		// amc13 trailer
 		MTF7_DEBUG_MSG( std::cout,  " --- amc13 trailer block" );

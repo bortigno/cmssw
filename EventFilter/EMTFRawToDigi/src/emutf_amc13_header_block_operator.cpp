@@ -1,4 +1,5 @@
 #include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_amc13_header_block_operator.h"
+#include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_debug.h"
 #include <iostream>
 //----------------------------------------------------------------------
 // mtf7::emutf_header_operator::emutf_amc13_header_block_operator( error_value *error_status, emutf_event *event_info ): emutf_block_operator( error_status, event_info ){}
@@ -38,22 +39,21 @@ std::cout << "16bit word d: " << _16bit_word_d << std::endl;
    std::cout << "Checkpoint 5" << std::endl;
 
   // pick the amc13 block
-  emutf_amc13_header_block * _unpacked_block_event_info = _unpacked_event_info -> _emutf_amc13_header_block;
+  emutf_amc13_header_block & _unpacked_block_event_info = *(_unpacked_event_info -> _emutf_amc13_header_block);
+
+  std::cout << "nAMC value pre unpacking: " << (int)_unpacked_event_info -> _emutf_amc13_header_block -> _amc13_header_namc << std::endl;
 
   std::cout << "Checkpoint 5.1" << std::endl;
 
-  _unpacked_block_event_info -> _amc13_header_evt_ty = (_16bit_word_a >> 8) & 0xf;
-  std::cout << "Checkpoint 5.2" << std::endl;
-  std::cout << "Checkpoint 5.3" << std::endl;
-
-  _unpacked_block_event_info -> _amc13_header_lv1_id = _16bit_word_b & 0xffff;
-  _unpacked_block_event_info -> _amc13_header_lv1_id |= (_16bit_word_a & 0xff) << 16;
-  _unpacked_block_event_info -> _amc13_header_bx_id = (_16bit_word_c >> 4) & 0xfff;
-  _unpacked_block_event_info -> _amc13_header_source_id = (_16bit_word_c & 0xf) << 8;
-  _unpacked_block_event_info -> _amc13_header_source_id |= (_16bit_word_d >> 8) & 0xff;
-  _unpacked_block_event_info -> _amc13_header_x = (_16bit_word_d >> 2) & 0x1;
-  _unpacked_block_event_info -> _amc13_header_h = (_16bit_word_d >> 3) & 0x1;
-  _unpacked_block_event_info -> _amc13_header_fov = (_16bit_word_d >> 4) & 0xf;
+  _unpacked_block_event_info . _amc13_header_evt_ty = (_16bit_word_a >> 8) & 0xf;
+  _unpacked_block_event_info . _amc13_header_lv1_id = _16bit_word_b & 0xffff;
+  _unpacked_block_event_info . _amc13_header_lv1_id |= (_16bit_word_a & 0xff) << 16;
+  _unpacked_block_event_info . _amc13_header_bx_id = (_16bit_word_c >> 4) & 0xfff;
+  _unpacked_block_event_info . _amc13_header_source_id = (_16bit_word_c & 0xf) << 8;
+  _unpacked_block_event_info . _amc13_header_source_id |= (_16bit_word_d >> 8) & 0xff;
+  _unpacked_block_event_info . _amc13_header_x = (_16bit_word_d >> 2) & 0x1;
+  _unpacked_block_event_info . _amc13_header_h = (_16bit_word_d >> 3) & 0x1;
+  _unpacked_block_event_info . _amc13_header_fov = (_16bit_word_d >> 4) & 0xf;
 
   // - - - - - - - - - - - - - - - - - - - - - 
   // 2nd 64-bit word ...
@@ -62,16 +62,31 @@ std::cout << "16bit word d: " << _16bit_word_d << std::endl;
    std::cout << "Checkpoint 7" << std::endl;
 
   // set values derived from 1st word
-  _unpacked_block_event_info -> _amc13_header_namc  =  _16bit_word_a & 0xf; _16bit_word_a <<= 4;
-  _unpacked_block_event_info -> _amc13_header_res   =  _16bit_word_a & 0xf; _16bit_word_a <<= 4;
-  _unpacked_block_event_info -> _amc13_header_ufov  =  _16bit_word_a & 0xf;
+   std::cout << "namc in words = " << (_16bit_word_a & 0xf) << std::endl ;
+  _unpacked_block_event_info . _amc13_header_namc  =  _16bit_word_a & 0xf; _16bit_word_a <<= 4;
+  _unpacked_block_event_info . _amc13_header_res   =  _16bit_word_a & 0xf; _16bit_word_a <<= 4;
+  _unpacked_block_event_info . _amc13_header_ufov  =  _16bit_word_a & 0xf;
+
+
+
+  std::cout << "nAMC value = " << (int)_unpacked_block_event_info . _amc13_header_namc << std::endl;
+  std::cout << "l1 id value = " << _unpacked_block_event_info . _amc13_header_lv1_id << std::endl;
+  std::cout << "Source id = " << _unpacked_block_event_info . _amc13_header_source_id << std::endl;
 
   // next 16 bits are reserved and set to 0.
 
-  _unpacked_block_event_info -> _amc13_header_orn = _16bit_word_b & 0xfff0;
-  _unpacked_block_event_info -> _amc13_header_orn |= (_16bit_word_c & 0xffff) << 12;
-  //_unpacked_block_event_info -> _amc13_header_orn |= (_16bit_word_a & 0xf) << 28;
-  _unpacked_block_event_info -> _amc13_header_orn |= (_16bit_word_d & 0xf) << 28;
+  _unpacked_block_event_info . _amc13_header_orn = _16bit_word_b & 0xfff0;
+  _unpacked_block_event_info . _amc13_header_orn |= (_16bit_word_c & 0xffff) << 12;
+  //_unpacked_block_event_info . _amc13_header_orn |= (_16bit_word_a & 0xf) << 28;
+  _unpacked_block_event_info . _amc13_header_orn |= (_16bit_word_d & 0xf) << 28;
+
+
+  MTF7_DEBUG( std::cout, _unpacked_block_event_info . _amc13_header_evt_ty);
+  MTF7_DEBUG( std::cout, _unpacked_block_event_info . _amc13_header_bx_id);
+  MTF7_DEBUG( std::cout, _unpacked_block_event_info . _amc13_header_fov);
+  MTF7_DEBUG( std::cout, _unpacked_block_event_info . _amc13_header_res);
+  MTF7_DEBUG( std::cout, _unpacked_block_event_info . _amc13_header_ufov);
+  MTF7_DEBUG( std::cout, _unpacked_block_event_info . _amc13_header_orn);
 
    std::cout << "Checkpoint 8" << std::endl;
   return at_ptr;
