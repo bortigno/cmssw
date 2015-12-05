@@ -57,6 +57,37 @@ namespace mtf7{
         }
     };
 
+    // amc header
+    struct emutf_amc_header_block{
+
+        word_8bit _amc_header_amc_number;
+        word_16bit _amc_header_bx_id, _amc_header_orbit_number, _amc_header_board_id;
+        word_32bit _amc_header_lv1_id, _amc_header_data_length, _amc_header_user_id;
+
+        void clear_block(){
+        _amc_header_amc_number = 0;
+	_amc_header_bx_id= 0;
+	_amc_header_orbit_number= 0;
+	_amc_header_board_id= 0;
+	_amc_header_lv1_id= 0;
+	_amc_header_data_length= 0;
+	_amc_header_user_id= 0;
+	}
+    };
+
+    // amc trailer
+    struct emutf_amc_trailer_block{
+
+        word_16bit _amc_trailer_lv1_id;
+        word_32bit _amc_trailer_crc32, _amc_trailer_data_length;
+
+        void clear_block(){
+        _amc_trailer_lv1_id = 0;
+	_amc_trailer_crc32= 0;
+	_amc_trailer_data_length= 0;
+	}
+    };
+
 
   // Event Record Header
   struct emutf_header_block {
@@ -267,6 +298,8 @@ namespace mtf7{
     emutf_amc13_header_block *_emutf_amc13_header_block = new emutf_amc13_header_block();
     // Vector of event record preheader
     std::vector<emutf_prepayload_header_block *> _emutf_prepayload_header_block_vector;
+    // Vector of amc header
+    std::vector<emutf_amc_header_block *> _emutf_amc_header_block_vector;
     // Vector of event record header
     std::vector<emutf_header_block *> _emutf_header_block_vector;
     // Vector of block of counters
@@ -277,6 +310,8 @@ namespace mtf7{
     std::vector<emutf_rpcdata_block *> _emutf_rpcdata_block_vector;
     // Vector of SP output data record
     std::vector<emutf_spoutputdata_block *> _emutf_spoutputdata_block_vector;
+     // Vector of amc trailer
+    std::vector<emutf_amc_trailer_block *> _emutf_amc_trailer_block_vector;
     // Vector of event record trailer
     std::vector<emutf_trailer_block *> _emutf_trailer_block_vector;
     // postpayload trailer 
@@ -293,6 +328,8 @@ namespace mtf7{
     event_info -> _emutf_amc13_header_block -> clear_block();
     for (unsigned int i=0; i<= event_info -> _emutf_prepayload_header_block_vector.size(); i++)
         event_info -> _emutf_prepayload_header_block_vector.at(i) -> clear_block();
+    for (unsigned int i=0; i<= event_info -> _emutf_amc_header_block_vector.size(); i++)
+        event_info -> _emutf_amc_header_block_vector.at(i) -> clear_block();
     for (unsigned int i=0; i<= event_info -> _emutf_header_block_vector.size(); i++)
         event_info -> _emutf_header_block_vector.at(i) -> clear_block();
     for (unsigned int i=0; i<= event_info -> _emutf_counter_block_vector.size(); i++)
@@ -303,6 +340,8 @@ namespace mtf7{
         event_info -> _emutf_rpcdata_block_vector.at(i) -> clear_block();
     for (unsigned int i=0; i<= event_info -> _emutf_spoutputdata_block_vector.size(); i++)
         event_info -> _emutf_spoutputdata_block_vector.at(i) -> clear_block();
+    for (unsigned int i=0; i<= event_info -> _emutf_amc_trailer_block_vector.size(); i++)
+        event_info -> _emutf_amc_trailer_block_vector.at(i) -> clear_block();
     for (unsigned int i=0; i<= event_info -> _emutf_trailer_block_vector.size(); i++)
         event_info -> _emutf_trailer_block_vector.at(i) -> clear_block();
     event_info -> _emutf_postpayload_trailer_block -> clear_block();
