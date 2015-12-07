@@ -69,22 +69,24 @@ std::cout << "Prepayload Header Checkpoint 6" << std::endl;
   if (*_error_status != mtf7::NO_ERROR) return 0;
 
 std::cout << "Prepayload Header Checkpoint 7" << std::endl;
-  _unpacked_block_event_info -> _prepayload_boardid = (_16bit_word_a & 0xffff);
+  _unpacked_block_event_info -> _prepayload_boardid = (_16bit_word_d & 0xffff);
 
-  _unpacked_block_event_info -> _prepayload_amcno = (_16bit_word_b & 0xf);
-  _unpacked_block_event_info -> _prepayload_blkNo = (_16bit_word_b >> 8 & 0xff);
+  _unpacked_block_event_info -> _prepayload_amcno = (_16bit_word_c & 0xf);
+  _unpacked_block_event_info -> _prepayload_blkNo = (_16bit_word_c >> 8 & 0xff);
 
-  _unpacked_block_event_info -> _prepayload_amcn_size = (_16bit_word_c & 0xffff); //Is this line correct?
-  _unpacked_block_event_info -> _prepayload_amcn_size |= (_16bit_word_d & 0xff) << 16;
+  _unpacked_block_event_info -> _prepayload_amcn_size = (_16bit_word_b & 0xffff); //Is this line correct?
+  _unpacked_block_event_info -> _prepayload_amcn_size |= (_16bit_word_a & 0xff) << 16;
+
+  std::cout << "@TEST: Unpacked event size" << (int)_unpacked_block_event_info -> _prepayload_amcn_size << std::endl;
 
 
-  _unpacked_block_event_info -> _prepayload_l = (_16bit_word_d >> 7 & 0x1); _16bit_word_d >>= 1;
-  _unpacked_block_event_info -> _prepayload_m = (_16bit_word_d >> 0x1); _16bit_word_d >>= 1;
-  _unpacked_block_event_info -> _prepayload_s = (_16bit_word_d >> 0x1); _16bit_word_d >>= 1;
-  _unpacked_block_event_info -> _prepayload_e = (_16bit_word_d >> 0x1); _16bit_word_d >>= 1;
-  _unpacked_block_event_info -> _prepayload_p = (_16bit_word_d >> 0x1); _16bit_word_d >>= 1;
-  _unpacked_block_event_info -> _prepayload_v = (_16bit_word_d >> 0x1); _16bit_word_d >>= 1;
-  _unpacked_block_event_info -> _prepayload_c = (_16bit_word_d >> 0x1); _16bit_word_d >>= 1;
+  _unpacked_block_event_info -> _prepayload_l = (_16bit_word_a >> 7 & 0x1); _16bit_word_a >>= 1;
+  _unpacked_block_event_info -> _prepayload_m = (_16bit_word_a >> 0x1); _16bit_word_a >>= 1;
+  _unpacked_block_event_info -> _prepayload_s = (_16bit_word_a >> 0x1); _16bit_word_a >>= 1;
+  _unpacked_block_event_info -> _prepayload_e = (_16bit_word_a >> 0x1); _16bit_word_a >>= 1;
+  _unpacked_block_event_info -> _prepayload_p = (_16bit_word_a >> 0x1); _16bit_word_a >>= 1;
+  _unpacked_block_event_info -> _prepayload_v = (_16bit_word_a >> 0x1); _16bit_word_a >>= 1;
+  _unpacked_block_event_info -> _prepayload_c = (_16bit_word_a >> 0x1); _16bit_word_a >>= 1;
 
   // now fill the vector of blocks in the event
   _unpacked_event_info -> _emutf_prepayload_header_block_vector.push_back(_unpacked_block_event_info);
@@ -103,22 +105,22 @@ unsigned long mtf7::emutf_prepayload_header_block_operator::pack(){
   // pick the block event info
   emutf_prepayload_header_block * _block_event_info_to_pack = _event_info_to_pack -> _emutf_prepayload_header_block_vector.front();
 
-_16bit_word_a = _block_event_info_to_pack -> _prepayload_boardid & 0xffff;
+_16bit_word_d = _block_event_info_to_pack -> _prepayload_boardid & 0xffff;
 
-_16bit_word_b = _block_event_info_to_pack -> _prepayload_blkNo & 0xff; _16bit_word_b <<= 8;
-_16bit_word_b = _block_event_info_to_pack -> _prepayload_amcno & 0xf;
+_16bit_word_c = _block_event_info_to_pack -> _prepayload_blkNo & 0xff; _16bit_word_b <<= 8;
+_16bit_word_c = _block_event_info_to_pack -> _prepayload_amcno & 0xf;
 
-_16bit_word_c |= _block_event_info_to_pack -> _prepayload_amcn_size & 0xffff;
-_16bit_word_c |= 0x5000;
-_16bit_word_d |= _block_event_info_to_pack -> _prepayload_amcn_size & 0xff;
+_16bit_word_b |= _block_event_info_to_pack -> _prepayload_amcn_size & 0xffff;
+_16bit_word_b |= 0x5000;
+_16bit_word_a |= _block_event_info_to_pack -> _prepayload_amcn_size & 0xff;
 
-_16bit_word_d = _block_event_info_to_pack -> _prepayload_c & 0x1; _16bit_word_d <<= 1;
-_16bit_word_d = _block_event_info_to_pack -> _prepayload_v & 0x1; _16bit_word_d <<= 1;
-_16bit_word_d = _block_event_info_to_pack -> _prepayload_p & 0x1; _16bit_word_d <<= 1;
-_16bit_word_d = _block_event_info_to_pack -> _prepayload_e & 0x1; _16bit_word_d <<= 1;
-_16bit_word_d = _block_event_info_to_pack -> _prepayload_s & 0x1; _16bit_word_d <<= 1;
-_16bit_word_d = _block_event_info_to_pack -> _prepayload_m & 0x1; _16bit_word_d <<= 1;
-_16bit_word_d = _block_event_info_to_pack -> _prepayload_l & 0x1; _16bit_word_d <<= 6;
+_16bit_word_a = _block_event_info_to_pack -> _prepayload_c & 0x1; _16bit_word_a <<= 1;
+_16bit_word_a = _block_event_info_to_pack -> _prepayload_v & 0x1; _16bit_word_a <<= 1;
+_16bit_word_a = _block_event_info_to_pack -> _prepayload_p & 0x1; _16bit_word_a <<= 1;
+_16bit_word_a = _block_event_info_to_pack -> _prepayload_e & 0x1; _16bit_word_a <<= 1;
+_16bit_word_a = _block_event_info_to_pack -> _prepayload_s & 0x1; _16bit_word_a <<= 1;
+_16bit_word_a = _block_event_info_to_pack -> _prepayload_m & 0x1; _16bit_word_a <<= 1;
+_16bit_word_a = _block_event_info_to_pack -> _prepayload_l & 0x1; _16bit_word_a <<= 6;
 
 
   *ptr = merge_abcd_words();

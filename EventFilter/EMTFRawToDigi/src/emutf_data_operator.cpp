@@ -56,11 +56,17 @@ mtf7::error_value mtf7::emutf_data_operator::unpack( const word_64bit *buffer ){
 	    MTF7_DEBUG_MSG(std::cout, "Unpacked. "); MTF7_DEBUG(std::cout, tmp_ptr);
 	}
 
+    // all preheader give information about the size of the payload. If size if 3 or less there is no payload (zero suppression).
+    // if size is > 3 then there are tracks to unpack from that specific board.
+
+   for( unsigned int _sp = 0; _sp < (unsigned int)_unpacked_event_info -> _emutf_prepayload_header_block_vector.size() ; _sp++ )
+      std::cout << "@INFO: Unpacked event info -> _prepayload_amcn_size[" << _sp << "] = " << (unsigned int) _unpacked_event_info -> _emutf_prepayload_header_block_vector.at(_sp) -> _prepayload_amcn_size << std::endl;
+
     // loop over all AMC13 payloads present in the event
     for ( unsigned int _sp = 0; _sp < nAMC ; _sp++ ){
 
-		for (block_operator_iterator iter = _workers -> begin()+1; // the amc13 header has been already unpacked 
-				iter != _workers->end()-1 ; iter++){ // the amc13 trailer will be unpacked at the very end
+		for (block_operator_iterator iter = _workers -> begin()+2; // the amc13 header and the preheader have been already unpacked 
+				iter != _workers->end()-2 ; iter++){ // the amc13 trailer and the posttrailer will be unpacked at the very end
 			if (_error_status != NO_ERROR) return _error_status;
 
 		    _tmp_block_operator = dynamic_cast<emutf_block_operator *> (*iter);
@@ -77,7 +83,12 @@ mtf7::error_value mtf7::emutf_data_operator::unpack( const word_64bit *buffer ){
 		            return _error_status;
 		    }
 		    MTF7_DEBUG_MSG(std::cout, "Unpacked. "); MTF7_DEBUG(std::cout, tmp_ptr);
-    	}
+    	          
+                    // after unpacker the header check the size of the amc. if it is 3 go directly to the event trailer.
+                    if (((unsigned int) _unpacked_event_info -> _emutf_prepayload_header_block_vector.at(_sp) -> _prepayload_amcn_size) < 4 && std::distance(_workers->begin(),iter) < 3)
+			iter = _workers -> end()-4; // remember that it will add one at next iteration.       
+                        MTF7_DEBUG_MSG( std::cout, "Empty SP. Going to the amc trailer (block 9).");
+		}
 
     }	
 
