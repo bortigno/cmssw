@@ -1,0 +1,52 @@
+*********************************************************
+*******   Info about EventFilter/EMTFRawToDigi/   *******
+*******   Last edit: AWB 05.12.15                 *******
+*********************************************************
+
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - -|
+|  Documentation                                        |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - -|
+  * AMC13 DAQ Facilities (AMC13_DAQ)
+    - docs/UpdatedDAQPath_2015-09-30.pdf
+    - Contains the description of AMC13 and MTF7 header and trailer words
+  * CMS Muon Endcap Track Finder DAQ readout format (EMTF_DAQ)
+    - docs/UpdatedDAQPath_2014-07-10.pdf
+    - Contains the description of the EMTF MTF7 payload
+
+
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - -|
+|  General description of algorithm                     |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - -|
+  * Run using the command: cmsRun python/ConfFile_cfg.py
+  * The first step is "building workers" in src/emutf_operator_builder.cpp
+    - This sets up the order of unpacking:
+      Instance              <--->   Class in mtf7 namespace (mtf7::class)     <--->   Documentation
+      ---------------------------------------------------------------------------------------------
+      amc13_header          <--->   emutf_amc13_header_block_operator         <--->   AMC13_DAQ page 4/7, lines  1 -  2, 2 64-bit words
+      prepayload_header     <--->   emutf_prepayload_header_block_operator    <--->   AMC13_DAQ page 4/7, lines  3 -  6, 1 64-bit word per input MTF7
+      *** Loop over each input MTF7: ***
+         header             <--->   emutf_header_block_operator               <--->   AMC13_DAQ page 3/7, lines  1 -  2, 2 64-bit words
+                                                                                      EMTF_DAQ  page 2/8, lines  1 - 12, 3 64-bit words
+         counters           <--->   emutf_counter_block_operator              <--->   EMTF_DAQ  page 4/8, lines  1 -  4, 1 64-bit word
+         cscmedata          <--->   emutf_cscmedata_block_operator            <--->   EMTF_DAQ  page 5/8, lines  1 -  4, 1 64-bit words per CSC track
+         rpcdata            <--->   emutf_rpcdata_block_operator              <--->   EMTF_DAQ  page 6/8, lines  1 -  4, 1 64-bit words per RPC track
+         spoutputdata       <--->   emutf_spoutputdata_block_operator         <--->   EMTF_DAQ  page 7/8, lines  1 -  8, 2 64-bit words per output track 
+         trailer            <--->   emutf_trailer_block_operator              <--->   EMTF_DAQ  page 8/8, lines  1 -  8, 2 64-bit words
+                                                                                      AMC13_DAQ page 3/7, line        4, 1 64-bit word
+      postpayload_trailer   <--->   emutf_postpayload_trailer_block_operator  <--->   AMC13_DAQ page 4/7, line       11, 1 64-bit word
+      amc13trailer          <--->   emutf_amc13_trailer_block_operator        <--->   AMC13_DAQ page 4/7, line       12, 1 64-bit word
+            
+  * The main loop in unpacking an event seems to occur in src/emutf_data_operator.cpp
+
+
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - -|
+|  Bitwise operators                                    |
+|- - - - - - - - - - - - - - - - - - - - - - - - - - - -|
+  * "Word >> X" returns "Word" shifted right by X binary bits (X/4 hex bits). Thus when you read a bit out of "Word", 
+    instead of reading bit Y you will read bit Y-X.
+  * "Word << X" returns "Word" shifted left by X binary bits (X/4 hex bits). This is basically multiplication by 2^X.
+    Thus, if I say Y = 0x00f << 8, it is equivalent to Y = 0xf00.
+  * "& 0xff" reads the right-most 8 binary bits (2 hex bits), "& 0xf" the right-most 4, "& 0x7" the right-most 3, 
+    "& 0x3" the right-most 2, and "& 0x1" the right-most 1.
+  * "|=" is the bitwise "OR" assignment. As used here (to concatenate words), it is basically addition, since the 
+    things being "OR-ed" do not have contents in the same bits.                                                                                                                   
