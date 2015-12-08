@@ -322,32 +322,33 @@ namespace mtf7{
   };
 
 
-  // Clear full event
-  static void clear_emutf_event( emutf_event *event_info ){
+  /* // AWB 08.12.15: Commented out to avoid compile warnings; not used? */
+  /* // Clear full event */
+  /* static void clear_emutf_event( emutf_event *event_info ){ */
 
-    event_info -> _emutf_amc13_header_block -> clear_block();
-    for (unsigned int i=0; i<= event_info -> _emutf_prepayload_header_block_vector.size(); i++)
-        event_info -> _emutf_prepayload_header_block_vector.at(i) -> clear_block();
-    for (unsigned int i=0; i<= event_info -> _emutf_amc_header_block_vector.size(); i++)
-        event_info -> _emutf_amc_header_block_vector.at(i) -> clear_block();
-    for (unsigned int i=0; i<= event_info -> _emutf_header_block_vector.size(); i++)
-        event_info -> _emutf_header_block_vector.at(i) -> clear_block();
-    for (unsigned int i=0; i<= event_info -> _emutf_counter_block_vector.size(); i++)
-        event_info -> _emutf_counter_block_vector.at(i) -> clear_block();
-    for (unsigned int i=0; i<= event_info -> _emutf_cscmedata_block_vector.size(); i++)
-        event_info -> _emutf_cscmedata_block_vector.at(i) -> clear_block();
-    for (unsigned int i=0; i<= event_info -> _emutf_rpcdata_block_vector.size(); i++)
-        event_info -> _emutf_rpcdata_block_vector.at(i) -> clear_block();
-    for (unsigned int i=0; i<= event_info -> _emutf_spoutputdata_block_vector.size(); i++)
-        event_info -> _emutf_spoutputdata_block_vector.at(i) -> clear_block();
-    for (unsigned int i=0; i<= event_info -> _emutf_amc_trailer_block_vector.size(); i++)
-        event_info -> _emutf_amc_trailer_block_vector.at(i) -> clear_block();
-    for (unsigned int i=0; i<= event_info -> _emutf_trailer_block_vector.size(); i++)
-        event_info -> _emutf_trailer_block_vector.at(i) -> clear_block();
-    event_info -> _emutf_postpayload_trailer_block -> clear_block();
-    event_info -> _emutf_amc13_trailer_block -> clear_block();
+  /*   event_info -> _emutf_amc13_header_block -> clear_block(); */
+  /*   for (unsigned int i=0; i<= event_info -> _emutf_prepayload_header_block_vector.size(); i++) */
+  /*       event_info -> _emutf_prepayload_header_block_vector.at(i) -> clear_block(); */
+  /*   for (unsigned int i=0; i<= event_info -> _emutf_amc_header_block_vector.size(); i++) */
+  /*       event_info -> _emutf_amc_header_block_vector.at(i) -> clear_block(); */
+  /*   for (unsigned int i=0; i<= event_info -> _emutf_header_block_vector.size(); i++) */
+  /*       event_info -> _emutf_header_block_vector.at(i) -> clear_block(); */
+  /*   for (unsigned int i=0; i<= event_info -> _emutf_counter_block_vector.size(); i++) */
+  /*       event_info -> _emutf_counter_block_vector.at(i) -> clear_block(); */
+  /*   for (unsigned int i=0; i<= event_info -> _emutf_cscmedata_block_vector.size(); i++) */
+  /*       event_info -> _emutf_cscmedata_block_vector.at(i) -> clear_block(); */
+  /*   for (unsigned int i=0; i<= event_info -> _emutf_rpcdata_block_vector.size(); i++) */
+  /*       event_info -> _emutf_rpcdata_block_vector.at(i) -> clear_block(); */
+  /*   for (unsigned int i=0; i<= event_info -> _emutf_spoutputdata_block_vector.size(); i++) */
+  /*       event_info -> _emutf_spoutputdata_block_vector.at(i) -> clear_block(); */
+  /*   for (unsigned int i=0; i<= event_info -> _emutf_amc_trailer_block_vector.size(); i++) */
+  /*       event_info -> _emutf_amc_trailer_block_vector.at(i) -> clear_block(); */
+  /*   for (unsigned int i=0; i<= event_info -> _emutf_trailer_block_vector.size(); i++) */
+  /*       event_info -> _emutf_trailer_block_vector.at(i) -> clear_block(); */
+  /*   event_info -> _emutf_postpayload_trailer_block -> clear_block(); */
+  /*   event_info -> _emutf_amc13_trailer_block -> clear_block(); */
 
-  }
+  /* } */
 
 
 
