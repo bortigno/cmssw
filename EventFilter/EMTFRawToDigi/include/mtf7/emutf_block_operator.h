@@ -4,7 +4,7 @@
 #include "EventFilter/EMTFRawToDigi/include/mtf7/types.h"
 #include "EventFilter/EMTFRawToDigi/include/mtf7/block_operator.h"
 #include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_event.h"
-#include <iostream>
+#include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_debug.h"
 namespace mtf7{
 
   class emutf_block_operator: public block_operator{

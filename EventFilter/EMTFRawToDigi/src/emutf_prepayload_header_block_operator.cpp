@@ -1,5 +1,4 @@
 #include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_prepayload_header_block_operator.h"
-#include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_debug.h"
 
 // Unpacks AMC13 header information about the MTF7 payloads, 1 64-bit word per input MTF7, page 4/7, lines 3 - 6 of docs/UpdatedDAQPath_2015-09-30.pdf
 const mtf7::word_64bit *mtf7::emutf_prepayload_header_block_operator::unpack ( const mtf7::word_64bit *at_ptr ){
@@ -31,7 +30,7 @@ const mtf7::word_64bit *mtf7::emutf_prepayload_header_block_operator::unpack ( c
   _unpacked_block_event_info -> _prepayload_amcn_size |= _16bit_word_b & 0xffff;       //          + bits 0 - 15 of word_b  
 
   // Check that bits 12 - 15 of word_c = 0x0
-  if ( (_16bit_word_c & 0xf000) != 0x0000 ){ *_error_status = mtf7::BLOCK_COUNTER_FORMAT; }
+  if ( (_16bit_word_c & 0xf000) != 0x0000 ) { *_error_status = mtf7::BLOCK_COUNTER_FORMAT; }
 
   _unpacked_block_event_info -> _prepayload_blkNo      = (_16bit_word_c >> 4) & 0xff; // Blk_No    = bits 4 - 11 of word_c 
   _unpacked_block_event_info -> _prepayload_amcno      = _16bit_word_c & 0xf;         // AmcNo     = bits 0 -  3 of word_c

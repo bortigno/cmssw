@@ -2,9 +2,10 @@
 #define __MTF7_BLOCK_OPERATOR__
 
 #include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_event.h"
-#include <vector>
-
 #include "EventFilter/EMTFRawToDigi/include/mtf7/types.h"
+#include <vector>
+#include <iostream>
+#include <iomanip>
 
 namespace mtf7{
 
