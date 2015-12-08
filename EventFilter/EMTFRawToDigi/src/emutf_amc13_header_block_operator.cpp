@@ -12,24 +12,20 @@ const mtf7::word_64bit *mtf7::emutf_amc13_header_block_operator::unpack( const w
 
    _buffer_start_ptr = at_ptr;
 
-   if (at_ptr== 0){
-	   *_error_status = mtf7::NULL_BUFFER_PTR; return 0;
-   }
+   if (at_ptr == 0) { *_error_status = mtf7::NULL_BUFFER_PTR; return 0; }
 
    // - - - - - - - - - - - - - - - - - - - - - 
    // Unpack 1st 64-bit word: CDF Header
-   break_into_abcd_words( *at_ptr); at_ptr++;
+   break_into_abcd_words( *at_ptr ); at_ptr++;
    
    // Check that bits 12 - 15 of word_a = 0x5
    // Bitwise comparison in hex: "_ & f" = "_" for any value of "_", and "_ & 0" = "0"
    // This is because 0xf = 15 in decimal = 1111 in binary, while 0x0 = 0 = 0000
    // Thus, "0x____ & 0xf000" = "0x_000"
-   if ( (_16bit_word_a & 0xf000) != 0x5000 ){
-     *_error_status = mtf7::EVENT_RECORD_FORMAT;
-   }
+   if ( (_16bit_word_a & 0xf000) != 0x5000 ){ *_error_status = mtf7::EVENT_RECORD_FORMAT; }
    if (*_error_status != mtf7::NO_ERROR) return 0;
    
-   // Pick the AMC13 block (What does this mean? Perhaps "pack" the AMC13 block? -AWB 05.12.15)
+   // Pick the AMC13 block (What does this mean? -AWB 05.12.15)
    emutf_amc13_header_block & _unpacked_block_event_info = *(_unpacked_event_info -> _emutf_amc13_header_block);
 
    // "Word >> X" returns "Word" shifted right by X binary bits (X/4 hex bits)
@@ -53,7 +49,7 @@ const mtf7::word_64bit *mtf7::emutf_amc13_header_block_operator::unpack( const w
    
    // - - - - - - - - - - - - - - - - - - - - - 
    // Unpack 2nd 64-bit word
-   break_into_abcd_words( *at_ptr); at_ptr++;
+   break_into_abcd_words( *at_ptr ); at_ptr++;
 
    // This would permanently shift _16bit_word_a right by 4 bits ... I think the method used above is cleaner.  AWB 05.12.15
    // _16bit_word_a >>=4;
@@ -87,7 +83,7 @@ unsigned long mtf7::emutf_amc13_header_block_operator::pack(){
 
   mtf7::word_64bit *ptr = buffer;
 
-  // Pick the AMC13 block (What does this mean? Perhaps "pack" the AMC13 block? -AWB 05.12.15)
+  // Pick the AMC13 block (What does this mean? -AWB 05.12.15)
   emutf_amc13_header_block * _block_event_info_to_pack = _event_info_to_pack -> _emutf_amc13_header_block;
 
   // - - - - - - - - - - - - - - - - - - - - - 
@@ -98,13 +94,13 @@ unsigned long mtf7::emutf_amc13_header_block_operator::pack(){
   
   _16bit_word_b  = _block_event_info_to_pack  -> _amc13_header_lv1_id & 0xffff;
   
-  _16bit_word_c  = (_block_event_info_to_pack  -> _amc13_header_bx_id & 0xfff) << 4;
+  _16bit_word_c  = (_block_event_info_to_pack -> _amc13_header_bx_id & 0xfff) << 4;
   _16bit_word_c |= (_block_event_info_to_pack -> _amc13_header_source_id >> 8) & 0xf;
   
-  _16bit_word_d  = (_block_event_info_to_pack  -> _amc13_header_source_id & 0xff) << 8;
-  _16bit_word_d |= (_block_event_info_to_pack  -> _amc13_header_fov & 0xf) << 4;
-  _16bit_word_d |= (_block_event_info_to_pack  -> _amc13_header_h & 0x1) << 3;
-  _16bit_word_d |= (_block_event_info_to_pack  -> _amc13_header_x & 0x1) << 2;
+  _16bit_word_d  = (_block_event_info_to_pack -> _amc13_header_source_id & 0xff) << 8;
+  _16bit_word_d |= (_block_event_info_to_pack -> _amc13_header_fov & 0xf) << 4;
+  _16bit_word_d |= (_block_event_info_to_pack -> _amc13_header_h & 0x1) << 3;
+  _16bit_word_d |= (_block_event_info_to_pack -> _amc13_header_x & 0x1) << 2;
   // Why don't we fill bits 1 and 2 (labeled "$" in docs/UpdatedDAQPath_2015-09-30.pdf) here? - AWB 05.12.15
 
   *ptr = merge_abcd_words(); ptr++;
@@ -116,7 +112,7 @@ unsigned long mtf7::emutf_amc13_header_block_operator::pack(){
   _16bit_word_a |= (_block_event_info_to_pack -> _amc13_header_namc & 0xf) << 4;
   _16bit_word_a |= 0x0;
   
-  _16bit_word_b  = 0x0000;
+  _16bit_word_b  = 0x000 << 4;
   _16bit_word_b |= (_block_event_info_to_pack -> _amc13_header_orn >> 28) & 0xf;
 
   _16bit_word_c  = (_block_event_info_to_pack -> _amc13_header_orn >> 12) & 0xffff;
