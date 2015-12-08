@@ -4,7 +4,7 @@ process = cms.Process("OWNPARTICLES")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
 
 process.source = cms.Source("NewEventStreamFileReader",
     # replace 'myfile.root' with the source file you want to use
@@ -13,7 +13,8 @@ process.source = cms.Source("NewEventStreamFileReader",
 #	'file:///afs/cern.ch/user/a/abrinke1/public/dat_dumps/run261113_ls0025_streamA_StorageManager.dat'
     #    '/store/t0streamer/Minidaq/A/000/260/696/run260696_ls0006_streamA_StorageManager.dat'
 #        '/store/t0streamer/Minidaq/A/000/261/105/run261105_ls0001_streamA_StorageManager.dat'
-        'file:////afs/cern.ch/work/a/abrinke1/public/EMTF/miniDAQ/dat_dumps/2015_11_11/261105/run261105_ls0001_streamA_StorageManager.dat'
+#        'file:////afs/cern.ch/work/a/abrinke1/public/EMTF/miniDAQ/dat_dumps/2015_11_11/261105/run261105_ls0001_streamA_StorageManager.dat'
+    'file:////afs/cern.ch/work/a/abrinke1/public/EMTF/miniDAQ/dat_dumps/2015_12_01/263041/run263041_ls0030_streamA_StorageManager.dat'
     )
 )
 

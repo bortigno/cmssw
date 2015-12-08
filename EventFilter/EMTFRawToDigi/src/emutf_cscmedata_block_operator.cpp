@@ -12,37 +12,44 @@ const mtf7::word_64bit *mtf7::emutf_cscmedata_block_operator::unpack ( const mtf
   if (at_ptr == 0) { *_error_status = mtf7::NULL_BUFFER_PTR; return 0; }
 
   break_into_abcd_words( *at_ptr ); at_ptr++;
-  if ( (_16bit_word_a & 0x8000 ) != 0x8000 ) *_error_status = mtf7::BLOCK_COUNTER_FORMAT; // check if D15 is 1 
-  if ( (_16bit_word_b & 0x8000 ) != 0x8000 ) *_error_status = mtf7::BLOCK_COUNTER_FORMAT; // check if D15 is 1
-  if ( (_16bit_word_c & 0x8000 ) != 0x0000 ) *_error_status = mtf7::BLOCK_COUNTER_FORMAT; // check if D15 is 0
-  if ( (_16bit_word_d & 0x8000 ) != 0x0000 ) *_error_status = mtf7::BLOCK_COUNTER_FORMAT; // check if D15 is 0
-  if (*_error_status != mtf7::NO_ERROR) return 0;
+  if ( (_16bit_word_d & 0x8000 ) != 0x8000 ) *_error_status = mtf7::BLOCK_COUNTER_FORMAT; // check if D15 is 1 
+  if ( (_16bit_word_c & 0x8000 ) != 0x8000 ) *_error_status = mtf7::BLOCK_COUNTER_FORMAT; // check if D15 is 1
+  if ( (_16bit_word_b & 0x8000 ) != 0x0000 ) *_error_status = mtf7::BLOCK_COUNTER_FORMAT; // check if D15 is 0
+  if ( (_16bit_word_a & 0x8000 ) != 0x0000 ) *_error_status = mtf7::BLOCK_COUNTER_FORMAT; // check if D15 is 0
+
+  // in case the block counter format is incorrect return the original pointer so you can attempt to unpack another pointer.
+  if (*_error_status == mtf7::BLOCK_COUNTER_FORMAT){ 
+    at_ptr--; 
+    return at_ptr; 
+  } else if (*_error_status != mtf7::NO_ERROR){
+    return 0;
+  }
 
 
-  _unpacked_block_event_info -> _csc_clct_pattern = (_16bit_word_a & 0xf); 
-  _unpacked_block_event_info -> _csc_quality = (_16bit_word_a >> 4) & 0xf;
-  _unpacked_block_event_info -> _csc_key_wire_group = (_16bit_word_a >> 8) & 0x7f;
+  _unpacked_block_event_info -> _csc_clct_pattern = (_16bit_word_d & 0xf); 
+  _unpacked_block_event_info -> _csc_quality = (_16bit_word_d >> 4) & 0xf;
+  _unpacked_block_event_info -> _csc_key_wire_group = (_16bit_word_d >> 8) & 0x7f;
 
-  _unpacked_block_event_info -> _csc_clct_key_half_strip = (_16bit_word_b & 0xff );
-  _unpacked_block_event_info -> _csc_id = (_16bit_word_b >> 8) & 0xf; _16bit_word_b >>= 12;
-  _unpacked_block_event_info -> _csc_lr = (_16bit_word_b & 0x1); _16bit_word_b >>= 1;
-  _unpacked_block_event_info -> _csc_bxe = (_16bit_word_b & 0x1); _16bit_word_b >>= 1;
-  _unpacked_block_event_info -> _csc_bc0 = (_16bit_word_b & 0x1);
+  _unpacked_block_event_info -> _csc_clct_key_half_strip = (_16bit_word_c & 0xff );
+  _unpacked_block_event_info -> _csc_id = (_16bit_word_c >> 8) & 0xf; _16bit_word_c >>= 12;
+  _unpacked_block_event_info -> _csc_lr = (_16bit_word_c & 0x1); _16bit_word_c >>= 1;
+  _unpacked_block_event_info -> _csc_bxe = (_16bit_word_c & 0x1); _16bit_word_c >>= 1;
+  _unpacked_block_event_info -> _csc_bc0 = (_16bit_word_c & 0x1);
 
-  _unpacked_block_event_info -> _csc_me_bxn = (_16bit_word_c & 0xfff); _16bit_word_c >>= 12;
-  _unpacked_block_event_info -> _csc_nit = (_16bit_word_c & 0x1); _16bit_word_c >>= 1;
-  _unpacked_block_event_info -> _csc_cik = (_16bit_word_c & 0x1); _16bit_word_c >>= 1;
-  _unpacked_block_event_info -> _csc_afff = (_16bit_word_c & 0x1);
+  _unpacked_block_event_info -> _csc_me_bxn = (_16bit_word_b & 0xfff); _16bit_word_b >>= 12;
+  _unpacked_block_event_info -> _csc_nit = (_16bit_word_b & 0x1); _16bit_word_b >>= 1;
+  _unpacked_block_event_info -> _csc_cik = (_16bit_word_b & 0x1); _16bit_word_b >>= 1;
+  _unpacked_block_event_info -> _csc_afff = (_16bit_word_b & 0x1);
 
 
-  _unpacked_block_event_info -> _csc_tbin_num = (_16bit_word_d & 0x7); _16bit_word_d >>= 3;
-  _unpacked_block_event_info -> _csc_vp = (_16bit_word_d & 0x1); _16bit_word_d >>= 1;
-  _unpacked_block_event_info -> _csc_station = (_16bit_word_d & 0x7); _16bit_word_d >>= 3;
-  _unpacked_block_event_info -> _csc_af = (_16bit_word_d & 0x1); _16bit_word_d >>= 1;
-  _unpacked_block_event_info -> _csc_epc = (_16bit_word_d & 0xf); _16bit_word_d >>= 4;
-  _unpacked_block_event_info -> _csc_sm = (_16bit_word_d & 0x1); _16bit_word_d >>= 1;
-  _unpacked_block_event_info -> _csc_se = (_16bit_word_d & 0x1); _16bit_word_d >>= 1;
-  _unpacked_block_event_info -> _csc_afef = (_16bit_word_d & 0x1);
+  _unpacked_block_event_info -> _csc_tbin_num = (_16bit_word_a & 0x7); _16bit_word_a >>= 3;
+  _unpacked_block_event_info -> _csc_vp = (_16bit_word_a & 0x1); _16bit_word_a >>= 1;
+  _unpacked_block_event_info -> _csc_station = (_16bit_word_a & 0x7); _16bit_word_a >>= 3;
+  _unpacked_block_event_info -> _csc_af = (_16bit_word_a & 0x1); _16bit_word_a >>= 1;
+  _unpacked_block_event_info -> _csc_epc = (_16bit_word_a & 0xf); _16bit_word_a >>= 4;
+  _unpacked_block_event_info -> _csc_sm = (_16bit_word_a & 0x1); _16bit_word_a >>= 1;
+  _unpacked_block_event_info -> _csc_se = (_16bit_word_a & 0x1); _16bit_word_a >>= 1;
+  _unpacked_block_event_info -> _csc_afef = (_16bit_word_a & 0x1);
 
   // now fill the vector of blocks in the event
   _unpacked_event_info -> _emutf_cscmedata_block_vector.push_back(_unpacked_block_event_info);

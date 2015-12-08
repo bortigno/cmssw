@@ -15,55 +15,67 @@ const mtf7::word_64bit *mtf7::emutf_spoutputdata_block_operator::unpack ( const 
 
 	if (at_ptr == 0) { *_error_status = mtf7::NULL_BUFFER_PTR; return 0; }
 
-
 	// 1st 64 bit word
 	break_into_abcd_words( *at_ptr ); at_ptr++;
 
-	if (!isd15true(_16bit_word_a))  *_error_status = mtf7::BLOCK_COUNTER_FORMAT; 
-	if (isd15true(_16bit_word_b))  *_error_status = mtf7::BLOCK_COUNTER_FORMAT; 
-	if (!isd15true(_16bit_word_c))  *_error_status = mtf7::BLOCK_COUNTER_FORMAT; 
-	if (isd15true(_16bit_word_d))  *_error_status = mtf7::BLOCK_COUNTER_FORMAT; 
-	if (*_error_status != mtf7::NO_ERROR) return 0;
+	if (!isd15true(_16bit_word_d))  *_error_status = mtf7::BLOCK_COUNTER_FORMAT; 
+	if (isd15true(_16bit_word_c))  *_error_status = mtf7::BLOCK_COUNTER_FORMAT; 
+	if (!isd15true(_16bit_word_b))  *_error_status = mtf7::BLOCK_COUNTER_FORMAT; 
+	if (isd15true(_16bit_word_a))  *_error_status = mtf7::BLOCK_COUNTER_FORMAT; 
+    
+    // in case the block counter format is incorrect return the original pointer so you can attempt to unpack another pointer.
+  	if (*_error_status == mtf7::BLOCK_COUNTER_FORMAT){ 
+   	 at_ptr--; 
+     return at_ptr; 
+  	} else if (*_error_status != mtf7::NO_ERROR){
+     return 0;
+  	}
 
-	_unpacked_block_event_info -> _track_phi_inner  = _16bit_word_a & 0xfff; _16bit_word_a >>= 12;
-	_unpacked_block_event_info -> _track_vc = _16bit_word_a & 0x1; _16bit_word_a >>= 1;
-	_unpacked_block_event_info -> _track_c = _16bit_word_a & 0x1; _16bit_word_a >>= 1;
-	_unpacked_block_event_info -> _track_hl = _16bit_word_a & 0x1;
+	_unpacked_block_event_info -> _track_phi_inner  = _16bit_word_d & 0xfff; _16bit_word_d >>= 12;
+	_unpacked_block_event_info -> _track_vc = _16bit_word_d & 0x1; _16bit_word_d >>= 1;
+	_unpacked_block_event_info -> _track_c = _16bit_word_d & 0x1; _16bit_word_d >>= 1;
+	_unpacked_block_event_info -> _track_hl = _16bit_word_d & 0x1;
 
-	_unpacked_block_event_info -> _track_phi_outer = _16bit_word_b & 0xfff; _16bit_word_b >>= 12;
-	_unpacked_block_event_info -> _track_bc0 = _16bit_word_b & 0x1; _16bit_word_b >>= 1;
-	_unpacked_block_event_info -> _track_se = _16bit_word_b & 0x1;
+	_unpacked_block_event_info -> _track_phi_outer = _16bit_word_c & 0xfff; _16bit_word_c >>= 12;
+	_unpacked_block_event_info -> _track_bc0 = _16bit_word_c & 0x1; _16bit_word_c >>= 1;
+	_unpacked_block_event_info -> _track_se = _16bit_word_c & 0x1;
 
-	_unpacked_block_event_info -> _track_eta = _16bit_word_c & 0x1ff; _16bit_word_c >>= 9;
-	_unpacked_block_event_info -> _track_quality = _16bit_word_c & 0xf;
+	_unpacked_block_event_info -> _track_eta = _16bit_word_b & 0x1ff; _16bit_word_b >>= 9;
+	_unpacked_block_event_info -> _track_quality = _16bit_word_b & 0xf;
 
-	_unpacked_block_event_info -> _track_pt = _16bit_word_d & 0x1ff; _16bit_word_d >>=9 ;
-	_unpacked_block_event_info -> _track_bx = _16bit_word_d & 0x7; 
+	_unpacked_block_event_info -> _track_pt = _16bit_word_a & 0x1ff; _16bit_word_a >>=9 ;
+	_unpacked_block_event_info -> _track_bx = _16bit_word_a & 0x7; 
 
 	// 2nd 64 bit word
 	break_into_abcd_words( *at_ptr ); at_ptr++;
 
-	if (isd15true(_16bit_word_a))  *_error_status = mtf7::BLOCK_COUNTER_FORMAT; 
-	if (!isd15true(_16bit_word_b))  *_error_status = mtf7::BLOCK_COUNTER_FORMAT; 
-	if (!isd15true(_16bit_word_c))  *_error_status = mtf7::BLOCK_COUNTER_FORMAT; 
+	std::cout << "isd15true(_16bit_word_d)" << std::endl;
+	std::cout << isd15true(_16bit_word_d) << std::endl;
+	std::cout << isd15true(_16bit_word_c) << std::endl;
+	std::cout << isd15true(_16bit_word_b) << std::endl;
+	std::cout << isd15true(_16bit_word_a) << std::endl;
+
 	if (isd15true(_16bit_word_d))  *_error_status = mtf7::BLOCK_COUNTER_FORMAT; 
-	if (*_error_status != mtf7::NO_ERROR) return 0;
+	if (!isd15true(_16bit_word_c))  *_error_status = mtf7::BLOCK_COUNTER_FORMAT; 
+	if (!isd15true(_16bit_word_b))  *_error_status = mtf7::BLOCK_COUNTER_FORMAT; 
+	if (isd15true(_16bit_word_a))  *_error_status = mtf7::BLOCK_COUNTER_FORMAT; 
+	if (*_error_status != mtf7::NO_ERROR) return 0; // here I return 0 because if the block was incorrect it should have been spotted already at the first word.
 
-	_unpacked_block_event_info -> _track_me1_id = _16bit_word_a & 0x7; _16bit_word_a >>= 3;
-	_unpacked_block_event_info -> _track_me2_id = _16bit_word_a & 0x3; _16bit_word_a >>= 2;
-	_unpacked_block_event_info -> _track_me3_id = _16bit_word_a & 0x3; _16bit_word_a >>= 2;
-	_unpacked_block_event_info -> _track_me4_id = _16bit_word_a & 0x3;
+	_unpacked_block_event_info -> _track_me1_id = _16bit_word_d & 0x7; _16bit_word_d >>= 3;
+	_unpacked_block_event_info -> _track_me2_id = _16bit_word_d & 0x3; _16bit_word_d >>= 2;
+	_unpacked_block_event_info -> _track_me3_id = _16bit_word_d & 0x3; _16bit_word_d >>= 2;
+	_unpacked_block_event_info -> _track_me4_id = _16bit_word_d & 0x3;
 
-	_unpacked_block_event_info -> _track_me1_tbin = _16bit_word_b & 0x7; _16bit_word_b >>= 3;
-	_unpacked_block_event_info -> _track_me2_tbin = _16bit_word_b & 0x7; _16bit_word_b >>= 3;
-	_unpacked_block_event_info -> _track_me3_tbin = _16bit_word_b & 0x7; _16bit_word_b >>= 3;
-	_unpacked_block_event_info -> _track_me4_tbin = _16bit_word_b & 0x7; _16bit_word_b >>= 3;
-	_unpacked_block_event_info -> _track_tbin_num = _16bit_word_b & 0x7; 
+	_unpacked_block_event_info -> _track_me1_tbin = _16bit_word_c & 0x7; _16bit_word_c >>= 3;
+	_unpacked_block_event_info -> _track_me2_tbin = _16bit_word_c & 0x7; _16bit_word_c >>= 3;
+	_unpacked_block_event_info -> _track_me3_tbin = _16bit_word_c & 0x7; _16bit_word_c >>= 3;
+	_unpacked_block_event_info -> _track_me4_tbin = _16bit_word_c & 0x7; _16bit_word_c >>= 3;
+	_unpacked_block_event_info -> _track_tbin_num = _16bit_word_c & 0x7; 
 
 
-	_unpacked_block_event_info -> _track_pt_lut_address = _16bit_word_c & 0x7fff;
+	_unpacked_block_event_info -> _track_pt_lut_address = _16bit_word_b & 0x7fff;
 
-	_unpacked_block_event_info -> _track_pt_lut_address |= (_16bit_word_d & 0x7fff) << 15;
+	_unpacked_block_event_info -> _track_pt_lut_address |= (_16bit_word_a & 0x7fff) << 15;
 
 	// now fill the vector of blocks in the event
 	_unpacked_event_info -> _emutf_spoutputdata_block_vector.push_back(_unpacked_block_event_info);

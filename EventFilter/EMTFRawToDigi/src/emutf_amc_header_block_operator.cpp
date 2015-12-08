@@ -13,7 +13,13 @@ const mtf7::word_64bit *mtf7::emutf_amc_header_block_operator::unpack ( const mt
 
   break_into_abcd_words( *at_ptr ); at_ptr++;
   if ( (_16bit_word_a & 0xf000 ) != 0x0000 ) *_error_status = mtf7::BLOCK_COUNTER_FORMAT; // check if D15 is 0
-  if (*_error_status != mtf7::NO_ERROR) return 0;
+  // in case the block counter format is incorrect return the original pointer so you can attempt to unpack another pointer.
+  if (*_error_status == mtf7::BLOCK_COUNTER_FORMAT){ 
+    at_ptr--; 
+    return at_ptr; 
+  } else if (*_error_status != mtf7::NO_ERROR){
+    return 0;
+  }
 
   _unpacked_block_event_info -> _amc_header_amc_number = (_16bit_word_a & 0x0f00 );
   _unpacked_block_event_info -> _amc_header_lv1_id = (( _16bit_word_a & 0x00ff ) << 16 ) || (_16bit_word_b & 0xffff);

@@ -18,8 +18,14 @@ const mtf7::word_64bit *mtf7::emutf_rpcdata_block_operator::unpack ( const mtf7:
   if ( _16bit_word_b & 0x8000 )              *_error_status = mtf7::BLOCK_COUNTER_FORMAT; // check if D15 is 0
   if ( (_16bit_word_c & 0x8000 ) != 0x8000 )  *_error_status = mtf7::BLOCK_COUNTER_FORMAT; // check if D15 is 1
   if ( _16bit_word_d & 0x8000 )              *_error_status = mtf7::BLOCK_COUNTER_FORMAT; // check if D15 is 0
-  if (*_error_status != mtf7::NO_ERROR) return 0;
 
+  // in case the block counter format is incorrect return the original pointer so you can attempt to unpack another pointer.
+  if (*_error_status == mtf7::BLOCK_COUNTER_FORMAT){ 
+    at_ptr--; 
+    return at_ptr; 
+  } else if (*_error_status != mtf7::NO_ERROR){
+    return 0;
+  }
 
   _unpacked_block_event_info -> _rpc_partition_data = (_16bit_word_a & 0xff); _16bit_word_a >>= 8; 
   _unpacked_block_event_info -> _rpc_partition_num = (_16bit_word_a & 0xf); _16bit_word_a >>= 4;

@@ -44,12 +44,12 @@ mtf7::block_operator_vector *mtf7::emutf_operator_builder::assemble_block_vector
 		mtf7::emutf_amc13_header_block_operator * amc13_header = new mtf7::emutf_amc13_header_block_operator( error_ptr );
 		_operator_vector->push_back( amc13_header );
 
-                //1 amc13 preheader
+        //1 amc13 preheader
 		MTF7_DEBUG_MSG( std::cout, " --- PrePayload header");
 		mtf7::emutf_prepayload_header_block_operator * prepayload_header = new mtf7::emutf_prepayload_header_block_operator( error_ptr );
 		_operator_vector->push_back( prepayload_header );
 
-                //2 amc header
+        //2 amc header
 		MTF7_DEBUG_MSG( std::cout, " --- AMC header");
 		mtf7::emutf_amc_header_block_operator * amc_header = new mtf7::emutf_amc_header_block_operator( error_ptr );
 		_operator_vector->push_back( amc_header );
