@@ -42,6 +42,8 @@ namespace mtf7{
         word_16bit _prepayload_blkNo;
         word_32bit _prepayload_amcn_size, _prepayload_boardid;
 
+emutf_prepayload_header_block(){ std::cout << "@HEAR ME: Constructing prepayload header" << std::endl; clear_block(); }
+
         void clear_block(){
             _prepayload_l = 0; 
             _prepayload_m = 0;
@@ -64,6 +66,8 @@ namespace mtf7{
         word_16bit _amc_header_bx_id, _amc_header_orbit_number, _amc_header_board_id;
         word_32bit _amc_header_lv1_id, _amc_header_data_length, _amc_header_user_id;
 
+emutf_amc_header_block(){ std::cout << "@HEAR ME: Constructing AMC header" << std::endl; clear_block(); }
+
         void clear_block(){
         _amc_header_amc_number = 0;
 	_amc_header_bx_id= 0;
@@ -81,6 +85,8 @@ namespace mtf7{
         word_16bit _amc_trailer_lv1_id;
         word_32bit _amc_trailer_crc32, _amc_trailer_data_length;
 
+emutf_amc_trailer_block(){ std::cout << "@HEAR ME: Constructing AMC Trailer" << std::endl; clear_block(); }
+
         void clear_block(){
         _amc_trailer_lv1_id = 0;
 	_amc_trailer_crc32= 0;
@@ -96,6 +102,8 @@ namespace mtf7{
     word_16bit _bxn, _ME1a, _ME1b, _ME2, _ME3, _ME4;
     word_8bit  _sp_ts, _sp_ersv, _sp_addr, _tbin;   
     word_1bit  _ddm, _spa, _rpca, _skip, _rdy, _bsy, _osy, _wof;    
+
+emutf_header_block(){ std::cout << "@HEAR ME: Constructing event record header" << std::endl; clear_block(); }
 
     void clear_block(){
     _l1a = 0;
@@ -131,6 +139,8 @@ namespace mtf7{
  
     word_32bit _TC, _OC;
 
+emutf_counter_block(){ std::cout << "@HEAR ME: Constructing event counter block" << std::endl; clear_block(); }
+
     void clear_block(){
     _TC  = 0;
     _OC  = 0;
@@ -144,6 +154,8 @@ namespace mtf7{
     word_8bit _csc_key_wire_group, _csc_clct_key_half_strip, _csc_quality, _csc_clct_pattern, _csc_id, _csc_epc, _csc_station, _csc_tbin_num;
     word_1bit _csc_bc0, _csc_bxe, _csc_lr, _csc_afff, _csc_cik, _csc_nit, _csc_afef, _csc_se, _csc_sm, _csc_af, _csc_vp;
   
+emutf_cscmedata_block(){ std::cout << "@HEAR ME: Constructing CSC ME data record" << std::endl; clear_block(); }
+
     void clear_block(){
     _csc_me_bxn = 0;
     _csc_key_wire_group = 0;
@@ -175,6 +187,8 @@ namespace mtf7{
     word_8bit _rpc_prt_delay, _rpc_partition_num, _rpc_partition_data, _rpc_bcn, _rpc_lb, _rpc_link_number, _rpc_bxn, _rpc_tbin;
     word_1bit _rpc_eod, _rpc_bc0;
 
+emutf_rpcdata_block(){ std::cout << "@HEAR ME: Constructing RPC data record" << std::endl; clear_block(); }
+
     void clear_block(){
     _rpc_prt_delay = 0;
     _rpc_partition_num = 0;
@@ -197,6 +211,8 @@ namespace mtf7{
     word_16bit _track_phi_inner, _track_phi_outer, _track_eta, _track_pt;
     word_8bit _track_quality, _track_bx, _track_me4_id, _track_me3_id, _track_me2_id, _track_me1_id, _track_tbin_num, _track_me4_tbin, _track_me3_tbin, _track_me2_tbin, _track_me1_tbin;
     word_1bit _track_hl, _track_c, _track_vc, _track_se, _track_bc0; 
+
+emutf_spoutputdata_block(){ std::cout << "@HEAR ME: Constructing SP data record" << std::endl; clear_block(); }
 
     void clear_block(){
     _track_pt_lut_address = 0;
@@ -231,7 +247,9 @@ namespace mtf7{
     word_16bit _trailer_ddcrs_bid, _trailer_spcrs_scc;
     word_8bit _trailer_l1a, _trailer_yy, _trailer_mm, _trailer_dd, _trailer_sp_ladr, _trailer_sp_ersv, _trailer_sp_padr, _trailer_ddcrs_lf;
     word_1bit _trailer_lfff, _trailer_bb, _trailer_lp, _trailer_hp;
-    
+   
+emutf_trailer_block(){ std::cout << "@HEAR ME: Constructing event trailer" << std::endl; clear_block(); }
+ 
     void clear_block(){
     _trailer_crc22 = 0;
     _trailer_ddcrs_bid = 0;
@@ -258,6 +276,8 @@ namespace mtf7{
     word_16bit _postpayload_trailer_bxid;
     word_8bit _postpayload_trailer_block_number, _postpayload_trailer_lv1_id;
 
+emutf_postpayload_trailer_block(){ std::cout << "@HEAR ME: Constructing post-payload trailer" << std::endl; clear_block(); }
+
     void clear_block(){
     _postpayload_trailer_crc32 = 0;
     _postpayload_trailer_bxid = 0;
@@ -273,6 +293,8 @@ namespace mtf7{
     word_16bit _amc13_trailer_crc16;
     word_8bit _amc13_trailer_evt_stat, _amc13_trailer_tts;
     word_1bit _amc13_trailer_c, _amc13_trailer_f, _amc13_trailer_t, _amc13_trailer_r;
+
+emutf_amc13_trailer_block(){ std::cout << "@HEAR ME: Constructing AMC13 trailer" << std::endl; clear_block(); }
 
     void clear_block(){
     _amc13_trailer_evt_lgth = 0;
