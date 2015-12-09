@@ -18,6 +18,8 @@
 #include <vector>
 #include <string>
 
+#include "TTree.h"
+
 
 class EMTFUnpacker: public edm::stream::EDProducer<> {
 private:
