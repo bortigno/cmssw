@@ -64,6 +64,7 @@
 #include <fstream>
 
 #include "TTree.h"
+#include "CommonTools/UtilAlgos/interface/TFileService.h"
 
 //
 // constants, enums and typedefs
