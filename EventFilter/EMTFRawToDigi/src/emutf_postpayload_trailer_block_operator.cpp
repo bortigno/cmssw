@@ -1,44 +1,39 @@
 #include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_postpayload_trailer_block_operator.h"
-#include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_debug.h"
 
+// Unpacks AMC13 trailer information about the MTF7 payloads, 1 64-bit word per input MTF7, page 4/7, line 11 of docs/UpdatedDAQPath_2015-09-30.pdf
 const mtf7::word_64bit *mtf7::emutf_postpayload_trailer_block_operator::unpack ( const mtf7::word_64bit *at_ptr ){
 
-  // pick the postpayload header data block
+  MTF7_DEBUG_MSG(std::cout, "######### Unpacking in emutf_postpayload_trailer_block_operator.cpp ######### ");
+
+  // Pick the post-payload header block
   emutf_postpayload_trailer_block & _unpacked_block_event_info = *(_unpacked_event_info -> _emutf_postpayload_trailer_block);
 
-//std::cout << "Unpacking PrePayloadHeader block" << std::endl;
   if (*_error_status != mtf7::NO_ERROR) return 0;
 
   if (at_ptr == 0) { *_error_status = mtf7::NULL_BUFFER_PTR; return 0; }
 
+  // - - - - - - - - - - - - - - - - - - - - -
+  // Unpack 64-bit word: CRC-32, Blk_No, LV1_id, and BX_id
   break_into_abcd_words( *at_ptr ); at_ptr++;
-  if ( (_16bit_word_c & 0x8000 ) != 0x0000 ) *_error_status = mtf7::BLOCK_COUNTER_FORMAT; // check if D15 is 0 
-  if ( (_16bit_word_c & 0x4000 ) != 0x0000 ) *_error_status = mtf7::BLOCK_COUNTER_FORMAT; // check if D14 is 0
-  if ( (_16bit_word_c & 0x2000 ) != 0x0000 ) *_error_status = mtf7::BLOCK_COUNTER_FORMAT; // check if D13 is 0
-  if ( (_16bit_word_c & 0x1000 ) != 0x0000 ) *_error_status = mtf7::BLOCK_COUNTER_FORMAT; // check if D12 is 0
- 
+
+  // Check that bits 12 - 15 of word_c = 0x0
+  if ( (_16bit_word_c & 0xf000) != 0x0000 ) { *_error_status = mtf7::BLOCK_COUNTER_FORMAT; }
   if (*_error_status != mtf7::NO_ERROR) return 0;
 
-  _unpacked_block_event_info . _postpayload_trailer_bxid = (_16bit_word_d & 0xfff); 
-
-  _unpacked_block_event_info . _postpayload_trailer_lv1_id = (_16bit_word_d & 0xf000);
-  _unpacked_block_event_info . _postpayload_trailer_lv1_id |= (_16bit_word_c & 0x000f) << 4;
-
-  _unpacked_block_event_info . _postpayload_trailer_block_number = (_16bit_word_c & 0x0ff0);
-
-  _unpacked_block_event_info . _postpayload_trailer_crc32 = (_16bit_word_b & 0xffff);
-  _unpacked_block_event_info . _postpayload_trailer_crc32 |= (_16bit_word_a & 0xffff) << 16;
-
-  MTF7_DEBUG( std::cout, _unpacked_block_event_info . _postpayload_trailer_bxid );
-  MTF7_DEBUG( std::cout, _unpacked_block_event_info . _postpayload_trailer_lv1_id);
-  MTF7_DEBUG( std::cout, _unpacked_block_event_info . _postpayload_trailer_block_number );
-  MTF7_DEBUG( std::cout, _unpacked_block_event_info . _postpayload_trailer_crc32);
-
+  _unpacked_block_event_info . _postpayload_trailer_crc32        = (_16bit_word_a & 0xffff) << 16; // CRC-32 = bits  0 - 15 of word_a
+  _unpacked_block_event_info . _postpayload_trailer_crc32       |= (_16bit_word_b & 0xffff);       //        + bits  0 - 15 of word_b
+  _unpacked_block_event_info . _postpayload_trailer_block_number = (_16bit_word_c >> 4) & 0xff;    // Blk_No = bits  4 - 11 of word_c
+  _unpacked_block_event_info . _postpayload_trailer_lv1_id       = (_16bit_word_c & 0xf) << 4;     // LV1_id = bits  0 -  3 of word_c
+  _unpacked_block_event_info . _postpayload_trailer_lv1_id      |= (_16bit_word_d >> 12) & 0xf;    //        + bits 12 - 15 of word_d
+  _unpacked_block_event_info . _postpayload_trailer_bxid         = (_16bit_word_d & 0xfff);        // BX_id  = bits  0 - 12 of word_d
+  
   return at_ptr;
 }
 
 
 unsigned long mtf7::emutf_postpayload_trailer_block_operator::pack(){
+
+  // AWB 10.12.15 - TODO: check the emutf_postpayload_trailer_block_operator packer with the latest format
 
   mtf7::word_64bit *buffer = create_buffer ( _nominal_buffer_size );
   

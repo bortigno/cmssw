@@ -15,7 +15,7 @@ const mtf7::word_64bit *mtf7::emutf_prepayload_header_block_operator::unpack ( c
   if (at_ptr == 0) { *_error_status = mtf7::NULL_BUFFER_PTR; return 0; }
 
   // - - - - - - - - - - - - - - - - - - - - -
-  // Unpack 1 64-bit word: LMSEPVC + MTF7 payload size
+  // Unpack 64-bit word: LMSEPVC, AMC_size, Blk_No, AmcNo, and BoardID
   break_into_abcd_words( *at_ptr ); at_ptr++;
 
   // word_a bit 15 is empty in docs/UpdatedDAQPath_2015-09-30.pdf
@@ -31,6 +31,7 @@ const mtf7::word_64bit *mtf7::emutf_prepayload_header_block_operator::unpack ( c
 
   // Check that bits 12 - 15 of word_c = 0x0
   if ( (_16bit_word_c & 0xf000) != 0x0000 ) { *_error_status = mtf7::BLOCK_COUNTER_FORMAT; }
+  if (*_error_status != mtf7::NO_ERROR) return 0;
 
   _unpacked_block_event_info -> _prepayload_blkNo      = (_16bit_word_c >> 4) & 0xff; // Blk_No    = bits 4 - 11 of word_c 
   _unpacked_block_event_info -> _prepayload_amcno      =  _16bit_word_c & 0xf;        // AmcNo     = bits 0 -  3 of word_c
@@ -55,8 +56,7 @@ unsigned long mtf7::emutf_prepayload_header_block_operator::pack(){
 
 
   // - - - - - - - - - - - - - - - - - - - - -
-  // Pack 1 64-bit word: LMSEPVC + MTF7 payload size
-  // Why don't we fill bit 15 (empty in docs/UpdatedDAQPath_2015-09-30.pdf) here? - AWB 08.12.15
+  // Pack 64-bit word: LMSEPVC, AMC_size, Blk_No, AmcNo, and BoardID
   _16bit_word_a  = (_block_event_info_to_pack -> _prepayload_l & 0x1) << 14;
   _16bit_word_a |= (_block_event_info_to_pack -> _prepayload_m & 0x1) << 13;
   _16bit_word_a |= (_block_event_info_to_pack -> _prepayload_s & 0x1) << 12;
