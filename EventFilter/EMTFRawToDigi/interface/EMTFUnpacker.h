@@ -125,8 +125,8 @@ private:
 		std::vector<int> rpc_eod;
 		std::vector<int> rpc_bc0;
 		std::vector<int> track_pt_lut_address;
-		std::vector<int> track_phi_inner;
-		std::vector<int> track_phi_outer;
+		std::vector<int> track_phi_full;
+		std::vector<int> track_phi_gmt;
 		std::vector<int> track_eta;
 		std::vector<int> track_pt;
 		std::vector<int> track_quality;
@@ -143,6 +143,7 @@ private:
 		std::vector<int> track_hl;
 		std::vector<int> track_c;
 		std::vector<int> track_vc;
+		std::vector<int> track_vt;
 		std::vector<int> track_se;
 		std::vector<int> track_bc0;
 		std::vector<int> trailer_crc22;

@@ -4,7 +4,6 @@
 #include "EventFilter/EMTFRawToDigi/include/mtf7/block_operator.h"
 #include "EventFilter/EMTFRawToDigi/include/mtf7/emutf_debug.h"
 
-
 //----------------------------------------------------------------------
 mtf7::block_operator::block_operator( mtf7::error_value *error_status ):
   _buffer_start_ptr(0), _i_own_buffer(false), _error_status(error_status)
@@ -31,6 +30,11 @@ void mtf7::block_operator::free_own_buffer()
 //----------------------------------------------------------------------
 mtf7::error_value mtf7::block_operator::get_error_status()
 { return *_error_status; }
+
+//----------------------------------------------------------------------
+bool mtf7::block_operator::is_bit_true( mtf7::word_16bit word, int bit_num){
+  // AWB 10.12.15 - TODO: Should force compile error if bit_num > 15
+  return ( (word >> bit_num) & 0x1 ); }
 
 //----------------------------------------------------------------------
 void mtf7::block_operator::break_into_abcd_words( word_64bit input_value ){

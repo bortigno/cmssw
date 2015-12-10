@@ -188,8 +188,8 @@ EMTFUnpacker::EMTFUnpacker(const edm::ParameterSet& iConfig)
 	EMTF->Branch("rpc_eod", &rpc_eod);
 	EMTF->Branch("rpc_bc0", &rpc_bc0);
 	EMTF->Branch("track_pt_lut_address", &track_pt_lut_address);
-	EMTF->Branch("track_phi_inner", &track_phi_inner);
-	EMTF->Branch("track_phi_outer", &track_phi_outer);
+	EMTF->Branch("track_phi_full", &track_phi_full);
+	EMTF->Branch("track_phi_gmt", &track_phi_gmt);
 	EMTF->Branch("track_eta", &track_eta);
 	EMTF->Branch("track_pt", &track_pt);
 	EMTF->Branch("track_quality", &track_quality);
@@ -206,6 +206,7 @@ EMTFUnpacker::EMTFUnpacker(const edm::ParameterSet& iConfig)
 	EMTF->Branch("track_hl", &track_hl);
 	EMTF->Branch("track_c", &track_c);
 	EMTF->Branch("track_vc", &track_vc);
+	EMTF->Branch("track_vt", &track_vt);
 	EMTF->Branch("track_se", &track_se);
 	EMTF->Branch("track_bc0", &track_bc0);
 	EMTF->Branch("trailer_crc22", &trailer_crc22);
@@ -442,8 +443,8 @@ EMTFUnpacker::produce(edm::Event& e, const edm::EventSetup& c)
 		//SP DATA RECORD
 		for(unsigned int i = 0; i < _unpacked_event->_emutf_spoutputdata_block_vector.size(); i++){
 			track_pt_lut_address.push_back( (int)_unpacked_event -> _emutf_spoutputdata_block_vector.at(i)->_track_pt_lut_address );
-			track_phi_inner     .push_back( (int)_unpacked_event -> _emutf_spoutputdata_block_vector.at(i)->_track_phi_inner      );
-			track_phi_outer     .push_back( (int)_unpacked_event -> _emutf_spoutputdata_block_vector.at(i)->_track_phi_outer      );
+			track_phi_full      .push_back( (int)_unpacked_event -> _emutf_spoutputdata_block_vector.at(i)->_track_phi_full       );
+			track_phi_gmt       .push_back( (int)_unpacked_event -> _emutf_spoutputdata_block_vector.at(i)->_track_phi_gmt        );
 			track_eta           .push_back( (int)_unpacked_event -> _emutf_spoutputdata_block_vector.at(i)->_track_eta            );
 			track_pt            .push_back( (int)_unpacked_event -> _emutf_spoutputdata_block_vector.at(i)->_track_pt             );
 			track_quality       .push_back( (int)_unpacked_event -> _emutf_spoutputdata_block_vector.at(i)->_track_quality        );
@@ -460,6 +461,7 @@ EMTFUnpacker::produce(edm::Event& e, const edm::EventSetup& c)
 			track_hl            .push_back( (int)_unpacked_event -> _emutf_spoutputdata_block_vector.at(i)->_track_hl             );
 			track_c             .push_back( (int)_unpacked_event -> _emutf_spoutputdata_block_vector.at(i)->_track_c              );
 			track_vc            .push_back( (int)_unpacked_event -> _emutf_spoutputdata_block_vector.at(i)->_track_vc             );
+			track_vt            .push_back( (int)_unpacked_event -> _emutf_spoutputdata_block_vector.at(i)->_track_vt             );
 			track_se            .push_back( (int)_unpacked_event -> _emutf_spoutputdata_block_vector.at(i)->_track_se             );
 			track_bc0           .push_back( (int)_unpacked_event -> _emutf_spoutputdata_block_vector.at(i)->_track_bc0            );
 		}

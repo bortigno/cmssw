@@ -13,7 +13,7 @@ const mtf7::word_64bit *mtf7::emutf_counter_block_operator::unpack ( const mtf7:
   if (at_ptr == 0) { *_error_status = mtf7::NULL_BUFFER_PTR; return 0; }
 
   // - - - - - - - - - - - - - - - - - - - - -
-  // Unpack 64-bit word: Block of Counters
+  // Unpack 64-bit word: BC
   break_into_dcba_words( *at_ptr ); at_ptr++;
 
   // Check that bit 15 of word_a, word_c, and word_d = 0x0, and bit 15 of word_b = 0x1
@@ -48,6 +48,8 @@ unsigned long mtf7::emutf_counter_block_operator::pack(){
   // Pick the MTF7 block event info
   emutf_counter_block * _block_event_info_to_pack = _event_info_to_pack -> _emutf_counter_block_vector.front();
   
+  // - - - - - - - - - - - - - - - - - - - - -
+  // Pack 64-bit word: BC
   _16bit_word_a = 0x0000 | (_block_event_info_to_pack -> _TC & 0x7fff);
   _16bit_word_b = 0x8000 | ( (_block_event_info_to_pack -> _TC >> 15) & 0x7fff);
   _16bit_word_c = 0x0000 | (_block_event_info_to_pack -> _OC & 0x7fff);

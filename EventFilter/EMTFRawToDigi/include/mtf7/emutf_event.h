@@ -206,16 +206,16 @@ emutf_rpcdata_block(){ std::cout << "@HEAR ME: Constructing RPC data record" << 
   // SP Output Data Record
   struct emutf_spoutputdata_block{
     word_32bit _track_pt_lut_address;
-    word_16bit _track_phi_inner, _track_phi_outer, _track_eta, _track_pt;
-    word_8bit _track_quality, _track_bx, _track_me4_id, _track_me3_id, _track_me2_id, _track_me1_id, _track_tbin_num, _track_me4_tbin, _track_me3_tbin, _track_me2_tbin, _track_me1_tbin;
-    word_1bit _track_hl, _track_c, _track_vc, _track_se, _track_bc0; 
+    word_16bit _track_phi_full, _track_eta, _track_pt;
+    word_8bit _track_phi_gmt, _track_quality, _track_bx, _track_me4_id, _track_me3_id, _track_me2_id, _track_me1_id, _track_tbin_num, _track_me4_tbin, _track_me3_tbin, _track_me2_tbin, _track_me1_tbin;
+    word_1bit _track_hl, _track_c, _track_vc, _track_vt, _track_se, _track_bc0; 
 
 emutf_spoutputdata_block(){ std::cout << "@HEAR ME: Constructing SP data record" << std::endl; clear_block(); }
 
     void clear_block(){
     _track_pt_lut_address = 0;
-    _track_phi_inner = 0;
-    _track_phi_outer = 0;
+    _track_phi_full = 0;
+    _track_phi_gmt = 0;
     _track_eta = 0;
     _track_pt = 0;
     _track_quality = 0;
@@ -233,6 +233,7 @@ emutf_spoutputdata_block(){ std::cout << "@HEAR ME: Constructing SP data record"
     _track_hl = false;
     _track_c = false;
     _track_vc = false;
+    _track_vt = false;
     _track_se = false;
     _track_bc0 = false;
     }

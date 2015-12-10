@@ -27,11 +27,6 @@ namespace mtf7{
 
     static const unsigned int _nominal_buffer_size = 2; // buffer size in 64-bit words
 
-  private:
-
-  // simple function checking if d15 is 1 or 0.
-	bool isd15true ( mtf7::word_16bit word );
-
   };
 
 }

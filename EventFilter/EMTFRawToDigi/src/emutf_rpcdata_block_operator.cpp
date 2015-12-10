@@ -13,7 +13,7 @@ const mtf7::word_64bit *mtf7::emutf_rpcdata_block_operator::unpack ( const mtf7:
   if (at_ptr == 0) { *_error_status = mtf7::NULL_BUFFER_PTR; return 0; }
 
   // - - - - - - - - - - - - - - - - - - - - -
-  // Unpack 64-bit word: RPC Data Record
+  // Unpack 64-bit word: RPC
   break_into_dcba_words( *at_ptr ); at_ptr++;
 
   // Check that bit 15 of word_a, word_b, and word_d = 0x0, and bit 15 of word_c = 0x1

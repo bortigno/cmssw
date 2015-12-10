@@ -37,6 +37,7 @@ namespace mtf7{
     const word_64bit *_buffer_start_ptr;
     mtf7_bool  _i_own_buffer;
     error_value *_error_status;
+    bool is_bit_true ( mtf7::word_16bit word, int bit_num);
 
     void break_into_abcd_words ( word_64bit input_value );
     word_64bit merge_abcd_words();

@@ -13,10 +13,10 @@ const mtf7::word_64bit *mtf7::emutf_cscmedata_block_operator::unpack ( const mtf
   if (at_ptr == 0) { *_error_status = mtf7::NULL_BUFFER_PTR; return 0; }
 
   // - - - - - - - - - - - - - - - - - - - - -
-  // Unpack 64-bit word: MEx Data Record
+  // Unpack 64-bit word: ME
   break_into_dcba_words( *at_ptr ); at_ptr++;
 
-  // Check that bit 15 of word_a and word_b = 0x0, and bit 15 of word_c and word_d = 0x0
+  // Check that bit 15 of word_a and word_b = 0x1, and bit 15 of word_c and word_d = 0x0
   if ( ((_16bit_word_a >> 15) & 0x1) != 0x1 ) { *_error_status = mtf7::BLOCK_COUNTER_FORMAT; }
   if ( ((_16bit_word_b >> 15) & 0x1) != 0x1 ) { *_error_status = mtf7::BLOCK_COUNTER_FORMAT; }
   if ( ((_16bit_word_c >> 15) & 0x1) != 0x0 ) { *_error_status = mtf7::BLOCK_COUNTER_FORMAT; }
