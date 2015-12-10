@@ -35,7 +35,7 @@ const mtf7::word_64bit *mtf7::emutf_amc13_header_block_operator::unpack( const w
   // since the things being "OR-ed" do not have contents in the same bits.
   _unpacked_block_event_info . _amc13_header_evt_ty     = (_16bit_word_a >> 8) & 0xf;   // Evt_ty    = bits 8 - 11 of word_a
   _unpacked_block_event_info . _amc13_header_lv1_id     = (_16bit_word_a & 0xff) << 16; // LV1_id    = bits 0 -  7 of word_a
-  _unpacked_block_event_info . _amc13_header_lv1_id    |= _16bit_word_b & 0xffff;       //           + bits 0 - 15 of word_b
+  _unpacked_block_event_info . _amc13_header_lv1_id    |=  _16bit_word_b & 0xffff;      //           + bits 0 - 15 of word_b
   _unpacked_block_event_info . _amc13_header_bx_id      = (_16bit_word_c >> 4) & 0xfff; // BX_id     = bits 4 - 15 of word_c
   _unpacked_block_event_info . _amc13_header_source_id  = (_16bit_word_c & 0xf) << 8;   // Source_id = bits 0 -  3 of word_c
   _unpacked_block_event_info . _amc13_header_source_id |= (_16bit_word_d >> 8) & 0xff;  //           + bits 8 - 15 of word_d
@@ -83,11 +83,11 @@ unsigned long mtf7::emutf_amc13_header_block_operator::pack(){
   
   // - - - - - - - - - - - - - - - - - - - - - 
   // Pack 1st 64-bit word: CDF Header
-  _16bit_word_a  = 0x5 << 12;
+  _16bit_word_a  =  0x5 << 12;
   _16bit_word_a |= (_block_event_info_to_pack -> _amc13_header_evt_ty & 0xf) << 8;
   _16bit_word_a |= (_block_event_info_to_pack -> _amc13_header_lv1_id >> 16) & 0xff;
   
-  _16bit_word_b  = _block_event_info_to_pack  -> _amc13_header_lv1_id & 0xffff;
+  _16bit_word_b  =  _block_event_info_to_pack  -> _amc13_header_lv1_id & 0xffff;
   
   _16bit_word_c  = (_block_event_info_to_pack -> _amc13_header_bx_id & 0xfff) << 4;
   _16bit_word_c |= (_block_event_info_to_pack -> _amc13_header_source_id >> 8) & 0xf;
@@ -105,15 +105,15 @@ unsigned long mtf7::emutf_amc13_header_block_operator::pack(){
   _16bit_word_a  = (_block_event_info_to_pack -> _amc13_header_ufov & 0xf) << 12;
   _16bit_word_a |= (_block_event_info_to_pack -> _amc13_header_res & 0xf) << 8;
   _16bit_word_a |= (_block_event_info_to_pack -> _amc13_header_namc & 0xf) << 4;
-  _16bit_word_a |= 0x0;
+  _16bit_word_a |=  0x0;
   
-  _16bit_word_b  = 0x000 << 4;
+  _16bit_word_b  =  0x000 << 4;
   _16bit_word_b |= (_block_event_info_to_pack -> _amc13_header_orn >> 28) & 0xf;
   
   _16bit_word_c  = (_block_event_info_to_pack -> _amc13_header_orn >> 12) & 0xffff;
   
   _16bit_word_d  = (_block_event_info_to_pack -> _amc13_header_orn & 0xfff) << 4;
-  _16bit_word_d |= 0x0;
+  _16bit_word_d |=  0x0;
   
   *ptr = merge_abcd_words(); ptr++;
   

@@ -27,14 +27,14 @@ const mtf7::word_64bit *mtf7::emutf_prepayload_header_block_operator::unpack ( c
   _unpacked_block_event_info -> _prepayload_v          = (_16bit_word_a >> 9) & 0x1;   // V        = bit       9 of word_a
   _unpacked_block_event_info -> _prepayload_c          = (_16bit_word_a >> 8) & 0x1;   // C        = bit       8 of word_a  
   _unpacked_block_event_info -> _prepayload_amcn_size  = (_16bit_word_a & 0xff) << 16; // AMC_size = bits 0 -  7 of word_a
-  _unpacked_block_event_info -> _prepayload_amcn_size |= _16bit_word_b & 0xffff;       //          + bits 0 - 15 of word_b  
+  _unpacked_block_event_info -> _prepayload_amcn_size |=  _16bit_word_b & 0xffff;      //          + bits 0 - 15 of word_b  
 
   // Check that bits 12 - 15 of word_c = 0x0
   if ( (_16bit_word_c & 0xf000) != 0x0000 ) { *_error_status = mtf7::BLOCK_COUNTER_FORMAT; }
 
   _unpacked_block_event_info -> _prepayload_blkNo      = (_16bit_word_c >> 4) & 0xff; // Blk_No    = bits 4 - 11 of word_c 
-  _unpacked_block_event_info -> _prepayload_amcno      = _16bit_word_c & 0xf;         // AmcNo     = bits 0 -  3 of word_c
-  _unpacked_block_event_info -> _prepayload_boardid    = _16bit_word_d & 0xffff;      // BoardID   = bits 0 - 15 od word_d
+  _unpacked_block_event_info -> _prepayload_amcno      =  _16bit_word_c & 0xf;        // AmcNo     = bits 0 -  3 of word_c
+  _unpacked_block_event_info -> _prepayload_boardid    =  _16bit_word_d & 0xffff;     // BoardID   = bits 0 - 15 od word_d
 
   // Now fill the vector of blocks in the event
   _unpacked_event_info -> _emutf_prepayload_header_block_vector.push_back(_unpacked_block_event_info);
@@ -66,13 +66,13 @@ unsigned long mtf7::emutf_prepayload_header_block_operator::pack(){
   _16bit_word_a |= (_block_event_info_to_pack -> _prepayload_c & 0x1) <<  8;
   _16bit_word_a |= (_block_event_info_to_pack -> _prepayload_amcn_size >> 16) & 0xff;
 
-  _16bit_word_b  = _block_event_info_to_pack -> _prepayload_amcn_size & 0xffff;
+  _16bit_word_b  =  _block_event_info_to_pack -> _prepayload_amcn_size & 0xffff;
 
-  _16bit_word_c  = 0x0 << 12;
+  _16bit_word_c  =  0x0 << 12;
   _16bit_word_c |= (_block_event_info_to_pack -> _prepayload_blkNo & 0xff) << 4;
-  _16bit_word_c |= _block_event_info_to_pack -> _prepayload_amcno & 0xf;
+  _16bit_word_c |=  _block_event_info_to_pack -> _prepayload_amcno & 0xf;
 
-  _16bit_word_d = _block_event_info_to_pack -> _prepayload_boardid & 0xffff;
+  _16bit_word_d  =  _block_event_info_to_pack -> _prepayload_boardid & 0xffff;
 
   *ptr = merge_abcd_words();
 
