@@ -243,17 +243,17 @@ emutf_spoutputdata_block(){ std::cout << "@HEAR ME: Constructing SP data record"
   // Event Record Trailer
   struct emutf_trailer_block{
     word_32bit _trailer_crc22;
-    word_16bit _trailer_ddcrs_bid, _trailer_spcrs_scc;
-    word_8bit _trailer_l1a, _trailer_yy, _trailer_mm, _trailer_dd, _trailer_sp_ladr, _trailer_sp_ersv, _trailer_sp_padr, _trailer_ddcrs_lf;
+    word_16bit _trailer_ddcsr_bid, _trailer_spcsr_scc;
+    word_8bit _trailer_l1a, _trailer_yy, _trailer_mm, _trailer_dd, _trailer_sp_ladr, _trailer_sp_ersv, _trailer_sp_padr, _trailer_ddcsr_lf;
     word_1bit _trailer_lfff, _trailer_bb, _trailer_lp, _trailer_hp;
    
 emutf_trailer_block(){ std::cout << "@HEAR ME: Constructing event trailer" << std::endl; clear_block(); }
  
     void clear_block(){
     _trailer_crc22 = 0;
-    _trailer_ddcrs_bid = 0;
-    _trailer_ddcrs_lf = 0;
-    _trailer_spcrs_scc = 0;
+    _trailer_ddcsr_bid = 0;
+    _trailer_ddcsr_lf = 0;
+    _trailer_spcsr_scc = 0;
     _trailer_l1a = 0;
     _trailer_yy = 0;
     _trailer_mm = 0;

@@ -210,9 +210,9 @@ EMTFUnpacker::EMTFUnpacker(const edm::ParameterSet& iConfig)
 	EMTF->Branch("track_se", &track_se);
 	EMTF->Branch("track_bc0", &track_bc0);
 	EMTF->Branch("trailer_crc22", &trailer_crc22);
-	EMTF->Branch("trailer_ddcrs_bid", &trailer_ddcrs_bid);
-	EMTF->Branch("trailer_ddcrs_lf", &trailer_ddcrs_lf);
-	EMTF->Branch("trailer_spcrs_scc", &trailer_spcrs_scc);
+	EMTF->Branch("trailer_ddcsr_bid", &trailer_ddcsr_bid);
+	EMTF->Branch("trailer_ddcsr_lf", &trailer_ddcsr_lf);
+	EMTF->Branch("trailer_spcsr_scc", &trailer_spcsr_scc);
 	EMTF->Branch("trailer_l1a", &trailer_l1a);
 	EMTF->Branch("trailer_yy", &trailer_yy);
 	EMTF->Branch("trailer_mm", &trailer_mm);
@@ -469,9 +469,9 @@ EMTFUnpacker::produce(edm::Event& e, const edm::EventSetup& c)
 		//EVENT RECORD TRAILER
 		for(unsigned int i = 0; i < _unpacked_event->_emutf_trailer_block_vector.size(); i++){
 			trailer_crc22    .push_back( (int)_unpacked_event -> _emutf_trailer_block_vector.at(i)->_trailer_crc22     );
-			trailer_ddcrs_bid.push_back( (int)_unpacked_event -> _emutf_trailer_block_vector.at(i)->_trailer_ddcrs_bid );
-			trailer_ddcrs_lf .push_back( (int)_unpacked_event -> _emutf_trailer_block_vector.at(i)->_trailer_ddcrs_lf  );
-			trailer_spcrs_scc.push_back( (int)_unpacked_event -> _emutf_trailer_block_vector.at(i)->_trailer_spcrs_scc );
+			trailer_ddcsr_bid.push_back( (int)_unpacked_event -> _emutf_trailer_block_vector.at(i)->_trailer_ddcsr_bid );
+			trailer_ddcsr_lf .push_back( (int)_unpacked_event -> _emutf_trailer_block_vector.at(i)->_trailer_ddcsr_lf  );
+			trailer_spcsr_scc.push_back( (int)_unpacked_event -> _emutf_trailer_block_vector.at(i)->_trailer_spcsr_scc );
 			trailer_l1a      .push_back( (int)_unpacked_event -> _emutf_trailer_block_vector.at(i)->_trailer_l1a       );
 			trailer_yy       .push_back( (int)_unpacked_event -> _emutf_trailer_block_vector.at(i)->_trailer_yy        );
 			trailer_mm       .push_back( (int)_unpacked_event -> _emutf_trailer_block_vector.at(i)->_trailer_mm        );

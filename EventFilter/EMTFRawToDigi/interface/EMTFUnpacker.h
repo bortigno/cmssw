@@ -147,9 +147,9 @@ private:
 		std::vector<int> track_se;
 		std::vector<int> track_bc0;
 		std::vector<int> trailer_crc22;
-		std::vector<int> trailer_ddcrs_bid;
-		std::vector<int> trailer_ddcrs_lf;
-		std::vector<int> trailer_spcrs_scc;
+		std::vector<int> trailer_ddcsr_bid;
+		std::vector<int> trailer_ddcsr_lf;
+		std::vector<int> trailer_spcsr_scc;
 		std::vector<int> trailer_l1a;
 		std::vector<int> trailer_yy;
 		std::vector<int> trailer_mm;
