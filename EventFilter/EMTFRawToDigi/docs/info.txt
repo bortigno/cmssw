@@ -10,7 +10,7 @@
     - docs/UpdatedDAQPath_2015-09-30.pdf
     - Contains the description of AMC13 and MTF7 header and trailer words
   * CMS Muon Endcap Track Finder DAQ readout format (EMTF_DAQ)
-    - docs/UpdatedDAQPath_2014-07-10.pdf
+    - docs/EMU_TF_DAQ_format_2015-12-03.pdf
     - Contains the description of the EMTF MTF7 payload
 
 
@@ -47,6 +47,8 @@
   * "Word << X" returns "Word" shifted left by X binary bits (X/4 hex bits). This is basically multiplication by 2^X.
     Thus, if I say Y = 0x00f << 8, it is equivalent to Y = 0xf00.
   * "& 0xff" reads the right-most 8 binary bits (2 hex bits), "& 0xf" the right-most 4, "& 0x7" the right-most 3, 
-    "& 0x3" the right-most 2, and "& 0x1" the right-most 1.
+    "& 0x3" the right-most 2, and "& 0x1" the right-most 1 (i.e. bit 0)
+  * Similarly, "& 0x2" reads bit 1, "& 0x4" bit 2, "0x8" bit 3, "0x10" bit 4, "0x20" bit 5, "0x40" bit 6, "0x80" bit 7,
+    "0x100" bit 8, "0x200" bit 9, "0x400" bit 10, "0x800" bit 11, "0x1000" bit 12, "0x2000" bit 13, "0x4000" bit 14, and "0x8000" bit 15
   * "|=" is the bitwise "OR" assignment. As used here (to concatenate words), it is basically addition, since the 
     things being "OR-ed" do not have contents in the same bits.
