@@ -22,7 +22,7 @@ const mtf7::word_64bit *mtf7::emutf_amc13_header_block_operator::unpack( const w
   if ( (_16bit_word_a & 0xf000) != 0x5000 ) { *_error_status = mtf7::EVENT_RECORD_FORMAT; }
   if (*_error_status != mtf7::NO_ERROR) return 0;
   
-  // Pick the AMC13 block (What does this mean? -AWB 05.12.15)
+  // Pick the AMC13 header block
   emutf_amc13_header_block & _unpacked_block_event_info = *(_unpacked_event_info -> _emutf_amc13_header_block);
   
   // "Word >> X" returns "Word" shifted right by X binary bits (X/4 hex bits)
