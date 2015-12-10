@@ -390,7 +390,6 @@ EMTFUnpacker::produce(edm::Event& e, const edm::EventSetup& c)
 			ME2    .push_back( (int)_unpacked_event -> _emutf_header_block_vector.at(i)->_ME2     );
 			ME3    .push_back( (int)_unpacked_event -> _emutf_header_block_vector.at(i)->_ME3     );
 			ME4    .push_back( (int)_unpacked_event -> _emutf_header_block_vector.at(i)->_ME4     );
-			RPC    .push_back( (int)_unpacked_event -> _emutf_header_block_vector.at(i)->_RPC     );
 		}
 
 		//BLOCK OF COUNTERS

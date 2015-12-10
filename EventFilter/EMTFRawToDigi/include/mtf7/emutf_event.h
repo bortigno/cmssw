@@ -98,7 +98,7 @@ emutf_amc_trailer_block(){ std::cout << "@HEAR ME: Constructing AMC Trailer" << 
   // Event Record Header
   struct emutf_header_block {
 
-    word_32bit _l1a, _RPC;    
+    word_32bit _l1a;    
     word_16bit _bxn, _ME1a, _ME1b, _ME2, _ME3, _ME4;
     word_8bit  _sp_ts, _sp_ersv, _sp_addr, _tbin;   
     word_1bit  _ddm, _spa, _rpca, _skip, _rdy, _bsy, _osy, _wof;    
@@ -128,8 +128,6 @@ emutf_header_block(){ std::cout << "@HEAR ME: Constructing event record header" 
     _ME2  = 0; 
     _ME3  = 0; 
     _ME4  = 0;
-
-    _RPC = 0;
 
     }
   };

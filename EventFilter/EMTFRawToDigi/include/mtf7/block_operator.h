@@ -40,6 +40,8 @@ namespace mtf7{
 
     void break_into_abcd_words ( word_64bit input_value );
     word_64bit merge_abcd_words();
+    void break_into_dcba_words ( word_64bit input_value );
+    word_64bit merge_dcba_words();
 
     word_16bit _16bit_word_a, _16bit_word_b, _16bit_word_c, _16bit_word_d;
     
