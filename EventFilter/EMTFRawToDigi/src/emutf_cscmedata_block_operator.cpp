@@ -2,6 +2,8 @@
 
 const mtf7::word_64bit *mtf7::emutf_cscmedata_block_operator::unpack ( const mtf7::word_64bit *at_ptr ){
 
+  MTF7_DEBUG_MSG(std::cout, "######### Unpacking in emutf_cscmedata_block_operator.cpp ######### ");
+  
   // Pick the MTF7 ME data block
   emutf_cscmedata_block * _unpacked_block_event_info = new emutf_cscmedata_block(); 
   _unpacked_block_event_info -> clear_block();
@@ -58,11 +60,11 @@ const mtf7::word_64bit *mtf7::emutf_cscmedata_block_operator::unpack ( const mtf
 
 unsigned long mtf7::emutf_cscmedata_block_operator::pack(){
 
+  // AWB 10.12.15 - TODO: check the emutf_cscmedata_block_operator packer with the latest format
+
   mtf7::word_64bit *buffer = create_buffer ( _nominal_buffer_size );
   
   mtf7::word_64bit *ptr = buffer;
-
-  // AWB 10.12.15 - TODO: check the packer
 
   // pick the block event info
   emutf_cscmedata_block * _block_event_info_to_pack = _event_info_to_pack -> _emutf_cscmedata_block_vector.front();
