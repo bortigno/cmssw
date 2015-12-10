@@ -2,6 +2,7 @@
 
 const mtf7::word_64bit *mtf7::emutf_counter_block_operator::unpack ( const mtf7::word_64bit *at_ptr ){
 
+  MTF7_DEBUG_MSG(std::cout, "######### Unpacking in emutf_counter_block_operator.cpp ######### ");
 
   // Pick the MTF7 counter block
   emutf_counter_block * _unpacked_block_event_info = new emutf_counter_block(); 
