@@ -20,21 +20,21 @@
   * Run using the command: cmsRun python/ConfFile_cfg.py
   * The first step is "building workers" in src/emutf_operator_builder.cpp
     - This sets up the order of unpacking:
-      Instance              <--->   Class in mtf7 namespace (mtf7::class)     <--->   Documentation
-      ---------------------------------------------------------------------------------------------
-      amc13_header          <--->   emutf_amc13_header_block_operator         <--->   AMC13_DAQ page 4/7, lines  1 -  2, 2 64-bit words
-      prepayload_header     <--->   emutf_prepayload_header_block_operator    <--->   AMC13_DAQ page 4/7, lines  3 -  6, 1 64-bit word per input MTF7
-      *** Loop over each input MTF7: ***
-         amc_header         <--->   emutf_amc_header_block_operator           <--->   AMC13_DAQ page 3/7, lines  1 -  2, 2 64-bit words
-         header             <--->   emutf_header_block_operator               <--->   EMTF_DAQ  page 2/8, lines  1 - 12, 3 64-bit words
-         counters           <--->   emutf_counter_block_operator              <--->   EMTF_DAQ  page 3/8, lines  1 -  4, 1 64-bit word
-            cscmedata       <--->   emutf_cscmedata_block_operator            <--->   EMTF_DAQ  page 4/8, lines  1 -  4, 1 64-bit words per CSC track
-            rpcdata         <--->   emutf_rpcdata_block_operator              <--->   EMTF_DAQ  page 5/8, lines  1 -  4, 1 64-bit words per RPC track
-            spoutputdata    <--->   emutf_spoutputdata_block_operator         <--->   EMTF_DAQ  page 6/8, lines  1 -  8, 2 64-bit words per output track
-         trailer            <--->   emutf_trailer_block_operator              <--->   EMTF_DAQ  page 7/8, lines  1 -  8, 2 64-bit words
-         amc_trailer        <--->   emutf_amc_trailer_block_operator          <--->   AMC13_DAQ page 3/7, line        4, 1 64-bit word
-      postpayload_trailer   <--->   emutf_postpayload_trailer_block_operator  <--->   AMC13_DAQ page 4/7, line       11, 1 64-bit word per input MTF7
-      amc13_trailer         <--->   emutf_amc13_trailer_block_operator        <--->   AMC13_DAQ page 4/7, line       12, 1 64-bit word
+      #  Instance              <--->   Class in mtf7 namespace (mtf7::class)     <--->   Documentation
+      ------------------------------------------------------------------------------------------------
+      0  amc13_header          <--->   emutf_amc13_header_block_operator         <--->   AMC13_DAQ page 4/7, lines  1 -  2, 2 64-bit words
+      1  prepayload_header     <--->   emutf_prepayload_header_block_operator    <--->   AMC13_DAQ page 4/7, lines  3 -  6, 1 64-bit word per input MTF7
+         *** Loop over each input MTF7: ***
+      2     amc_header         <--->   emutf_amc_header_block_operator           <--->   AMC13_DAQ page 3/7, lines  1 -  2, 2 64-bit words
+      3     header             <--->   emutf_header_block_operator               <--->   EMTF_DAQ  page 2/8, lines  1 - 12, 3 64-bit words (if MTF7 has tracks)
+      4     counters           <--->   emutf_counter_block_operator              <--->   EMTF_DAQ  page 3/8, lines  1 -  4, 1 64-bit word  (if MTF7 has tracks)
+      5        cscmedata       <--->   emutf_cscmedata_block_operator            <--->   EMTF_DAQ  page 4/8, lines  1 -  4, 1 64-bit words per CSC track
+      6        rpcdata         <--->   emutf_rpcdata_block_operator              <--->   EMTF_DAQ  page 5/8, lines  1 -  4, 1 64-bit words per RPC track
+      7        spoutputdata    <--->   emutf_spoutputdata_block_operator         <--->   EMTF_DAQ  page 6/8, lines  1 -  8, 2 64-bit words per output track
+      8     trailer            <--->   emutf_trailer_block_operator              <--->   EMTF_DAQ  page 7/8, lines  1 -  8, 2 64-bit words (if MTF7 has tracks)
+      9     amc_trailer        <--->   emutf_amc_trailer_block_operator          <--->   AMC13_DAQ page 3/7, line        4, 1 64-bit word
+     10  postpayload_trailer   <--->   emutf_postpayload_trailer_block_operator  <--->   AMC13_DAQ page 4/7, line       11, 1 64-bit word
+     11  amc13_trailer         <--->   emutf_amc13_trailer_block_operator        <--->   AMC13_DAQ page 4/7, line       12, 1 64-bit word
             
   * The main loop in unpacking an event seems to occur in src/emutf_data_operator.cpp
 

@@ -80,7 +80,7 @@
 //
 EMTFUnpacker::EMTFUnpacker(const edm::ParameterSet& iConfig)
 {
-   ntuple  = new TFile("EMTF_ntuple.root","RECREATE");
+   ntuple  = new TFile("PlotMaker/NTuples/EMTF_ntuple.root","RECREATE");
    //register your products
    produces<L1CSCTrackCollection>();
 
@@ -262,6 +262,161 @@ EMTFUnpacker::~EMTFUnpacker()
 void
 EMTFUnpacker::produce(edm::Event& e, const edm::EventSetup& c)
 {
+
+  //*****************************************************************************************
+  //                       BEGIN INITIALIZING VARIABLES FOR NTUPLE                  
+  //            THIS IS A TERRIBLE WAY TO DO THIS - THERE MUST BE SOMETHING BETTER                  
+  // BUT WITHOUT THIS, ALL THE VECTORS WERE KEEPING THEIR CONTENTS FROM ONE EVENT TO THE NEXT                  
+  //                               TODO AWB 12.12.15
+  //*****************************************************************************************
+
+  // List of "int" type variables
+  amc13_header_orn = -99;
+  amc13_header_lv1_id = -99;
+  amc13_header_bx_id = -99;
+  amc13_header_source_id = -99;
+  amc13_header_evt_ty = -99;
+  amc13_header_fov = -99;
+  amc13_header_ufov = -99;
+  amc13_header_res = -99;
+  amc13_header_namc = -99;
+  amc13_header_h = -99;
+  amc13_header_x = -99;
+
+  // List of "std::vector<int>" type variables
+  prepayload_l.clear();
+  prepayload_m.clear();
+  prepayload_s.clear();
+  prepayload_e.clear();
+  prepayload_p.clear();
+  prepayload_v.clear();
+  prepayload_c.clear();
+  prepayload_amcno.clear();
+  prepayload_blkNo.clear();
+  prepayload_amcn_size.clear();
+  prepayload_boardid.clear();
+  amc_header_amc_number.clear();
+  amc_header_bx_id.clear();
+  amc_header_orbit_number.clear();
+  amc_header_orbit_number.clear();
+  amc_header_board_id.clear();
+  amc_header_lv1_id.clear();
+  amc_header_data_length.clear();
+  amc_header_user_id.clear();
+  amc_trailer_lv1_id.clear();
+  amc_trailer_crc32.clear();
+  amc_trailer_data_length.clear();
+  l1a.clear();
+  bxn.clear();
+  sp_ts.clear();
+  sp_ersv.clear();
+  sp_addr.clear();
+  tbin.clear();
+  ddm.clear();
+  spa.clear();
+  rpca.clear();
+  skip.clear();
+  rdy.clear();
+  bsy.clear();
+  osy.clear();
+  wof.clear();
+  ME1a.clear();
+  ME1b.clear();
+  ME2.clear();
+  ME3.clear();
+  ME4.clear();
+  RPC.clear();
+  TC.clear();
+  OC.clear();
+  csc_me_bxn.clear();
+  csc_key_wire_group.clear();
+  csc_clct_key_half_strip.clear();
+  csc_quality.clear();
+  csc_clct_pattern.clear();
+  csc_id.clear();
+  csc_epc.clear();
+  csc_station.clear();
+  csc_tbin_num.clear();
+  csc_bc0.clear();
+  csc_bxe.clear();
+  csc_lr.clear();
+  csc_afff.clear();
+  csc_cik.clear();
+  csc_nit.clear();
+  csc_afef.clear();
+  csc_se.clear();
+  csc_sm.clear();
+  csc_af.clear();
+  csc_vp.clear();
+  rpc_prt_delay.clear();
+  rpc_partition_num.clear();
+  rpc_partition_data.clear();
+  rpc_bcn.clear();
+  rpc_lb.clear();
+  rpc_link_number.clear();
+  rpc_bxn.clear();
+  rpc_tbin.clear();
+  rpc_eod.clear();
+  rpc_bc0.clear();
+  track_pt_lut_address.clear();
+  track_phi_full.clear();
+  track_phi_gmt.clear();
+  track_eta.clear();
+  track_pt.clear();
+  track_quality.clear();
+  track_bx.clear();
+  track_me4_id.clear();
+  track_me3_id.clear();
+  track_me2_id.clear();
+  track_me1_id.clear();
+  track_me4_tbin.clear();
+  track_me3_tbin.clear();
+  track_me2_tbin.clear();
+  track_me1_tbin.clear();
+  track_tbin_num.clear();
+  track_hl.clear();
+  track_c.clear();
+  track_vc.clear();
+  track_vt.clear();
+  track_se.clear();
+  track_bc0.clear();
+  trailer_crc22.clear();
+  trailer_ddcsr_bid.clear();
+  trailer_ddcsr_lf.clear();
+  trailer_spcsr_scc.clear();
+  trailer_l1a.clear();
+  trailer_yy.clear();
+  trailer_mm.clear();
+  trailer_dd.clear();
+  trailer_sp_ladr.clear();
+  trailer_sp_ersv.clear();
+  trailer_sp_padr.clear();
+  trailer_lfff.clear();
+  trailer_bb.clear();
+
+  // List of "int" type variables
+  postpayload_trailer_crc32 = -99;
+  postpayload_trailer_bxid = -99;
+  postpayload_trailer_block_number = -99;
+  postpayload_trailer_lv1_id = -99;
+  amc13_trailer_evt_lgth = -99;
+  amc13_trailer_crc16 = -99;
+  amc13_trailer_evt_stat = -99;
+  amc13_trailer_tts = -99;
+  amc13_trailer_c = -99;
+  amc13_trailer_f = -99;
+  amc13_trailer_t = -99;
+  amc13_trailer_r = -99;
+
+  //*****************************************************************************************
+  //                      END INITIALIZING VARIABLES FOR NTUPLE                  
+  //            THIS IS A TERRIBLE WAY TO DO THIS - THERE MUST BE SOMETHING BETTER                  
+  // BUT WITHOUT THIS, ALL THE VECTORS WERE KEEPING THEIR CONTENTS FROM ONE EVENT TO THE NEXT                  
+  //                               TODO AWB 12.12.15
+  //*****************************************************************************************
+
+
+
    using namespace edm;
 /* This is an event example
    //Read 'ExampleData' from the Event
@@ -299,7 +454,6 @@ EMTFUnpacker::produce(edm::Event& e, const edm::EventSetup& c)
         if( fedData.size()==0 ) continue;
         std::cout << "fed id = " << fedid << std::endl;
 	std::cout << "fedData size = " << fedData.size() << std::endl;
-	std::cout << "fedData.data(): " << fedData.data() << std::endl;
 	//LogDebug("CSCTFUnpacker|produce");
         //if( monitor ) monitor->process((unsigned short*)fedData.data());
         //unsigned int unpacking_status = tfEvent.unpack((unsigned short*)fedData.data(),fedData.size()/2);
@@ -331,7 +485,7 @@ EMTFUnpacker::produce(edm::Event& e, const edm::EventSetup& c)
 
 		//{{{
 		//AMC13 HEADER 
-
+	
 		amc13_header_orn       = (int)_unpacked_event ->_emutf_amc13_header_block->_amc13_header_orn       ;                                        
 		amc13_header_lv1_id    = (int)_unpacked_event ->_emutf_amc13_header_block->_amc13_header_lv1_id    ;                                        
 		amc13_header_bx_id     = (int)_unpacked_event ->_emutf_amc13_header_block->_amc13_header_bx_id     ;                                        
@@ -343,8 +497,9 @@ EMTFUnpacker::produce(edm::Event& e, const edm::EventSetup& c)
 		amc13_header_namc      = (int)_unpacked_event ->_emutf_amc13_header_block->_amc13_header_namc      ;                                         
 		amc13_header_h         = (int)_unpacked_event ->_emutf_amc13_header_block->_amc13_header_h         ;                                         
 		amc13_header_x         = (int)_unpacked_event ->_emutf_amc13_header_block->_amc13_header_x         ;                                         
-
+		
 		//PREPAYLOAD HEADER
+		MTF7_DEBUG_MSG(std::cout, "_emutf_prepayload_header_block_vector.size = " << _unpacked_event->_emutf_prepayload_header_block_vector.size() );
 		for(unsigned int i = 0; i < _unpacked_event->_emutf_prepayload_header_block_vector.size(); i++){
 			prepayload_l        .push_back( (int)_unpacked_event -> _emutf_prepayload_header_block_vector.at(i)->_prepayload_l         );
 			prepayload_m        .push_back( (int)_unpacked_event -> _emutf_prepayload_header_block_vector.at(i)->_prepayload_m         );
@@ -360,6 +515,7 @@ EMTFUnpacker::produce(edm::Event& e, const edm::EventSetup& c)
 		}
 
 		//AMC HEADER
+		MTF7_DEBUG_MSG(std::cout, "_emutf_amc_header_block_vector.size = " << _unpacked_event->_emutf_amc_header_block_vector.size() );
 		for(unsigned int i = 0; i < _unpacked_event->_emutf_amc_header_block_vector.size(); i++){
 			amc_header_amc_number  .push_back( (int)_unpacked_event ->_emutf_amc_header_block_vector.at(i)->_amc_header_amc_number        );
 			amc_header_bx_id       .push_back( (int)_unpacked_event ->_emutf_amc_header_block_vector.at(i)->_amc_header_bx_id             );
@@ -371,6 +527,7 @@ EMTFUnpacker::produce(edm::Event& e, const edm::EventSetup& c)
 		}	
 
 		//EVENT RECORD HEADER
+		MTF7_DEBUG_MSG(std::cout, "_emutf_header_block_vector.size = " << _unpacked_event->_emutf_header_block_vector.size() );
 		for(unsigned int i = 0; i < _unpacked_event->_emutf_header_block_vector.size(); i++){
 			l1a    .push_back( (int)_unpacked_event -> _emutf_header_block_vector.at(i)->_l1a     );
 			bxn    .push_back( (int)_unpacked_event -> _emutf_header_block_vector.at(i)->_bxn     );
@@ -394,6 +551,7 @@ EMTFUnpacker::produce(edm::Event& e, const edm::EventSetup& c)
 		}
 
 		//BLOCK OF COUNTERS
+		MTF7_DEBUG_MSG(std::cout, "_emutf_counter_block_vector.size = " << _unpacked_event->_emutf_counter_block_vector.size() );
 		for(unsigned int i = 0; i < _unpacked_event->_emutf_counter_block_vector.size(); i++){
 			TC.push_back( (int)_unpacked_event -> _emutf_counter_block_vector.at(i)->_TC); 
 			OC.push_back( (int)_unpacked_event -> _emutf_counter_block_vector.at(i)->_OC); 
@@ -401,6 +559,7 @@ EMTFUnpacker::produce(edm::Event& e, const edm::EventSetup& c)
 
 
 		//CSC ME DATA RECORD
+		MTF7_DEBUG_MSG(std::cout, "_emutf_cscmedata_block_vector.size = " << _unpacked_event->_emutf_cscmedata_block_vector.size() );
 		for(unsigned int i = 0; i < _unpacked_event->_emutf_cscmedata_block_vector.size(); i++){
 			csc_me_bxn             .push_back( (int)_unpacked_event -> _emutf_cscmedata_block_vector.at(i)->_csc_me_bxn              );
 			csc_key_wire_group     .push_back( (int)_unpacked_event -> _emutf_cscmedata_block_vector.at(i)->_csc_key_wire_group      );
@@ -426,6 +585,7 @@ EMTFUnpacker::produce(edm::Event& e, const edm::EventSetup& c)
 
 
 		//RPC DATA RECORD
+		MTF7_DEBUG_MSG(std::cout, "_emutf_rpcdata_block_vector.size = " << _unpacked_event->_emutf_rpcdata_block_vector.size() );
 		for(unsigned int i = 0; i < _unpacked_event->_emutf_rpcdata_block_vector.size(); i++){
 			rpc_prt_delay     .push_back( (int)_unpacked_event -> _emutf_rpcdata_block_vector.at(i)->_rpc_prt_delay      );
 			rpc_partition_num .push_back( (int)_unpacked_event -> _emutf_rpcdata_block_vector.at(i)->_rpc_partition_num  );
@@ -441,6 +601,7 @@ EMTFUnpacker::produce(edm::Event& e, const edm::EventSetup& c)
 
 
 		//SP DATA RECORD
+		MTF7_DEBUG_MSG(std::cout, "_emutf_spoutputdata_block_vector.size = " << _unpacked_event->_emutf_spoutputdata_block_vector.size() );
 		for(unsigned int i = 0; i < _unpacked_event->_emutf_spoutputdata_block_vector.size(); i++){
 			track_pt_lut_address.push_back( (int)_unpacked_event -> _emutf_spoutputdata_block_vector.at(i)->_track_pt_lut_address );
 			track_phi_full      .push_back( (int)_unpacked_event -> _emutf_spoutputdata_block_vector.at(i)->_track_phi_full       );
@@ -467,6 +628,7 @@ EMTFUnpacker::produce(edm::Event& e, const edm::EventSetup& c)
 		}
 
 		//EVENT RECORD TRAILER
+		MTF7_DEBUG_MSG(std::cout, "_emutf_trailer_block_vector.size = " << _unpacked_event->_emutf_trailer_block_vector.size() );
 		for(unsigned int i = 0; i < _unpacked_event->_emutf_trailer_block_vector.size(); i++){
 			trailer_crc22    .push_back( (int)_unpacked_event -> _emutf_trailer_block_vector.at(i)->_trailer_crc22     );
 			trailer_ddcsr_bid.push_back( (int)_unpacked_event -> _emutf_trailer_block_vector.at(i)->_trailer_ddcsr_bid );
@@ -484,6 +646,7 @@ EMTFUnpacker::produce(edm::Event& e, const edm::EventSetup& c)
 		}
 
 		//AMC TRAILER
+		MTF7_DEBUG_MSG(std::cout, "_emutf_amc_trailer_block_vector.size = " << _unpacked_event->_emutf_amc_trailer_block_vector.size() );
 		for(unsigned int i = 0; i < _unpacked_event->_emutf_amc_trailer_block_vector.size(); i++){
 			amc_trailer_lv1_id     .push_back( (int)_unpacked_event -> _emutf_amc_trailer_block_vector.at(i)->_amc_trailer_lv1_id      );               
 			amc_trailer_crc32      .push_back( (int)_unpacked_event -> _emutf_amc_trailer_block_vector.at(i)->_amc_trailer_crc32       );               
@@ -507,17 +670,14 @@ EMTFUnpacker::produce(edm::Event& e, const edm::EventSetup& c)
 		amc13_trailer_t       = (int)_unpacked_event -> _emutf_amc13_trailer_block->_amc13_trailer_t        ;                                             
 		amc13_trailer_r       = (int)_unpacked_event -> _emutf_amc13_trailer_block->_amc13_trailer_r        ;                                             
 
-
-		//EMTF->Fill(); //This worked, but I think that the tree should be filled at the end		
-		//}}}
 		//****************************************************************************
 		//                END FILLING VARIABLES FOR NTUPLE                  
 		//****************************************************************************
 
 
-	}
-        EMTF->Fill();	
-}
+    } // End loop over FEDs: "for(int fedid=1350; fedid<=1409; fedid++)"
+    EMTF->Fill();	
+} // End of produce function: "EMTFUnpacker::produce(edm::Event& e, const edm::EventSetup& c)"
 
 // ------------ method called once each job just before starting event loop  ------------
 void 
