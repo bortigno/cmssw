@@ -1,0 +1,85 @@
+{
+
+"TH1": { 
+
+"variables": {
+
+"amc13_trailer_evt_lgth": {
+    "title"      : "AMC13 trailer event length",
+    "expression" : "amc13_trailer_evt_lgth",
+    "nBins"      : 101,
+    "xMin"       : -0.5,
+    "xMax"       : 100.5,
+    "cuts"       : ""},
+
+"amc13_bx_minus_amc_bx": {
+    "title"      : "BX difference: AMC13 - MTF7 header",
+    "expression" : "(amc13_header_bx_id - amc_header_bx_id)",
+    "nBins"      : 11,
+    "xMin"       : -5.5,
+    "xMax"       : 5.5,
+    "cuts"       : ""},
+
+"amc_bx_minus_bxn": {
+    "title"      : "BX difference: MTF7 header - track",
+    "expression" : "(amc_header_bx_id - bxn)",
+    "nBins"      : 11,
+    "xMin"       : -5.5,
+    "xMax"       : 5.5,
+    "cuts"       : ""},
+
+"amc13_header_bx_id": {
+    "title"      : "AMC13 header BX",
+    "expression" : "amc13_header_bx_id",
+    "nBins"      : 3603,
+    "xMin"       : -1.5,
+    "xMax"       : 3601.5,
+    "cuts"       : ""},
+
+"amc_header_bx_id": {
+    "title"      : "MTF7 header BX",
+    "expression" : "amc_header_bx_id",
+    "nBins"      : 3603,
+    "xMin"       : -1.5,
+    "xMax"       : 3601.5,
+    "cuts"       : ""},
+
+"amc_header_amc_number": {
+    "title"      : "AMC # of MTF7",
+    "expression" : "amc_header_amc_number",
+    "nBins"      : 15,
+    "xMin"       : -1.5,
+    "xMax"       : 13.5,
+    "cuts"       : ""},
+
+"track_bx": {
+    "title"      : "Track BX",
+    "expression" : "track_bx",
+    "nBins"      : 15,
+    "xMin"       : -7.5,
+    "xMax"       : 7.5,
+    "cuts"       : ""}
+}
+
+},
+
+"TH2": { 
+
+"variables": {
+
+"amc13_bx_minus_amc_bx_VS_amc_number": {
+    "title"      : "AMC13 - MTF7 BX vs. MTF7 AMC #",
+    "expression" : "(amc13_header_bx_id - amc_header_bx_id):amc_header_amc_number",
+    "nBinsX"     : 15,
+    "xMin"       : -1.5,
+    "xMax"       : 13.5,
+    "nBinsY"     : 11,
+    "yMin"       : -5.5,
+    "yMax"       : 5.5,
+    "cuts"       : ""}
+
+}
+
+}
+
+}
